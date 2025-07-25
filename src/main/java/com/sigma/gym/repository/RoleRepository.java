@@ -1,6 +1,7 @@
 package com.sigma.gym.repository;
-import com.sigma.gym.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.sigma.gym.entity.Role;
 
 import java.util.Optional;
 

@@ -4,7 +4,8 @@ package com.sigma.gym.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.sigma.gym.config.JwtProperties;
-import com.sigma.gym.model.User;
+import com.sigma.gym.entity.User;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

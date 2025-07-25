@@ -1,14 +1,15 @@
 // src/main/java/com/sigma/gym/service/AuthenticationService.java
-package com.sigma.gym.services;
+package com.sigma.gym.services.auth;
 
-import com.sigma.gym.dtos.AuthenticationRequest;
-import com.sigma.gym.dtos.AuthenticationResponse;
-import com.sigma.gym.dtos.RegisterRequest;
-import com.sigma.gym.model.Role;
-import com.sigma.gym.model.User;
+import com.sigma.gym.controllers.auth.dtos.AuthenticationRequest;
+import com.sigma.gym.controllers.auth.dtos.AuthenticationResponse;
+import com.sigma.gym.controllers.auth.dtos.RegisterRequest;
+import com.sigma.gym.entity.Role;
+import com.sigma.gym.entity.User;
 import com.sigma.gym.repository.RoleRepository;
 import com.sigma.gym.repository.UserRepository;
 import com.sigma.gym.security.JwtService;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.security.auth.message.AuthException;
 
@@ -61,7 +62,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new RuntimeException("Role MEMBER not found"));
 
         User user = new User();
-        user.setUsername(request.getName());
+        user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRoles(Collections.singleton(memberRole));
@@ -101,4 +102,5 @@ public class AuthenticationService {
             throw new AuthException("Invalid email or password");
         }
     }
+    
 }

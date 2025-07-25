@@ -1,8 +1,9 @@
 // src/main/java/com/sigma/gym/service/CustomUserDetailsService.java
 package com.sigma.gym.services;
 
-import com.sigma.gym.model.User;
+import com.sigma.gym.entity.User;
 import com.sigma.gym.repository.UserRepository;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,8 +1,9 @@
 // src/main/java/com/sigma/gym/security/JwtAuthenticationFilter.java
 package com.sigma.gym.security;
 
-import com.sigma.gym.model.User;
+import com.sigma.gym.entity.User;
 import com.sigma.gym.repository.UserRepository;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        System.out.println("🛠️ JwtAuthenticationFilter inicializado correctamente");
     }
 
     @Override
@@ -32,7 +34,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
+        // ✅ CRUCIAL: Saltar filtro para rutas públicas
+        String path = request.getRequestURI();
+        System.out.println("🔥 JwtAuthenticationFilter activo - request: " + request.getRequestURI());
 
+
+        System.out.println("➡️ Request a: " + path); 
+        if (path.startsWith("/auth/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+         // 🔐 Validación del token
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

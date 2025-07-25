@@ -1,0 +1,12 @@
+# 🧠 PENDIENTES - ENTIDADES GYM
+
+- [x] User
+- [x] Role
+- [x] Attendance
+- [x] WorkoutPlan
+- [x] Routine
+- [x] Exercise
+- [ ] RoutineExercise (Mapper + DTO)
+- [ ] WorkoutLog (Entidad + DTO + Mapper)
+- [ ] ProgressMapper
+- [ ] Vincular entrenadores que crean planes

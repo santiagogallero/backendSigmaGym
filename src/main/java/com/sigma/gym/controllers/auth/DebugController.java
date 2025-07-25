@@ -1,4 +1,4 @@
-package com.sigma.gym.controllers;
+package com.sigma.gym.controllers.auth;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
