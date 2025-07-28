@@ -11,8 +11,13 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
     @Query("SELECT u FROM User u WHERE u.username = ?1")
-    Optional<User> findByUsername(String username);
-    Boolean existsByUsername(String username);
-    Boolean existsByEmail(String email);
+    Optional<User> findByUsername(String username); // 👈 Este está perfecto
+
+    Boolean existsByUsername(String username); // 👈 Correcto para validar existencia previa
+
+    Boolean existsByEmail(String email); // 👈 También bien
+
+    Optional<User> findByEmail(String email); // 👈 Acá está el cambio necesario
 }

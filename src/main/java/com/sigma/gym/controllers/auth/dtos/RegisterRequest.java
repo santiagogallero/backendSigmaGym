@@ -1,7 +1,4 @@
-// src/main/java/com/sigma/gym/dto/RegisterRequest.java
 package com.sigma.gym.controllers.auth.dtos;
-
-import com.sigma.gym.entity.Role;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RegisterRequest {
 
     @NotNull
@@ -32,6 +30,8 @@ public class RegisterRequest {
     private String lastName;
 
     @NotNull
-    private Long roleId; // ahora que Role es entidad, se usa el ID
-}
+    private Long roleId; // id del rol
 
+    @NotNull
+    private String membershipType; // nombre del tipo de membresía elegido (ej: "3 veces por semana")
+}

@@ -24,4 +24,5 @@ public class Role {
     // opcional: permisos si querés escalar
     // @ElementCollection
     // private List<String> permissions;
+
 }

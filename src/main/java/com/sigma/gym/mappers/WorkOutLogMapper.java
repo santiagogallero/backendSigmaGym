@@ -1,4 +1,4 @@
-package com.sigma.gym.mapper;
+package com.sigma.gym.mappers;
 
 import com.sigma.gym.controllers.DTOs.WorkOutLogDto;
 import com.sigma.gym.entity.WorkOutLog;

@@ -1,12 +1,48 @@
-# 🧠 PENDIENTES - ENTIDADES GYM
+# ✅ PROGRESO 26/07 - SIGMA GYM BACKEND
 
-- [x] User
+## Entidades revisadas y completadas hoy:
+- [x] User (con roles múltiples, membresía y lógica de expiración)
 - [x] Role
 - [x] Attendance
 - [x] WorkoutPlan
 - [x] Routine
 - [x] Exercise
-- [ ] RoutineExercise (Mapper + DTO)
-- [ ] WorkoutLog (Entidad + DTO + Mapper)
+- [x] RoutineExercise (Entidad + Mapper + DTO)
+- [x] RoutineLog (Entidad + Mapper + DTO)
+
+## Servicios y lógica:
+- UserServiceImpl completo con:
+  - createUser con validaciones (email, username, rol, membresía)
+  - getUserByUsername, updateUser, getUserById
+  - Uso correcto de @Transactional y PasswordEncoder
+- AuthenticationService corregido para manejar múltiples roles
+- Ajuste de JWT para soportar lista de roles
+
+## DTOs y Mappers:
+- AuthenticationRequest y AuthenticationResponse separados correctamente
+- RegisterRequest adaptado para usar roleId
+- UserDTO corregido
+- UserMapper corregido: toDto y toEntity funcionando
+
+## Controllers:
+- UserController con endpoints:
+  - GET /users
+  - GET /users/data
+  - PUT /users/update
+  - GET /users/{id}
+- Uso correcto de UserMapper y ResponseData en controladores
+
+## Correcciones generales:
+- Se reemplazaron llamadas a `user.toDTO()` por `UserMapper.toDto(user)`
+- Imports corregidos (`ResponseData`, `UserDTO`, etc.)
+- Arreglo de errores de compilación (`builder()`, `getRoles()` mal referenciados)
+
+---
+
+## 🔜 Pendientes sugeridos para seguir:
+- [ ] RoutineExerciseLog (Entidad + Mapper + DTO)
+- [ ] WorkoutLogMapper
+- [ ] WorkoutLogDto
 - [ ] ProgressMapper
-- [ ] Vincular entrenadores que crean planes
+- [ ] Vincular entrenadores (`User`) a WorkoutPlan como `trainer` (`@ManyToOne`)
+

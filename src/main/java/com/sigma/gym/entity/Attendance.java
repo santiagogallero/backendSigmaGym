@@ -11,6 +11,8 @@ import java.time.LocalTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
+// Clase que representa la asistencia de un miembro al gimnasio.
 public class Attendance {
 
     @Id

@@ -1,9 +1,8 @@
 package com.sigma.gym.controllers.auth.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sigma.gym.controllers.auth.dtos.AuthenticationResponse;
-import com.sigma.gym.entity.Role;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +24,7 @@ public class AuthenticationResponse {
     @NotNull
     private String email;
 
-    @NotNull
-    private Role role;
+    private Set<String> roles;
 
     private String firstName;
 

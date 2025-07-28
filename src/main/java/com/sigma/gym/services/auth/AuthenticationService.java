@@ -1,4 +1,3 @@
-// src/main/java/com/sigma/gym/service/AuthenticationService.java
 package com.sigma.gym.services.auth;
 
 import com.sigma.gym.controllers.auth.dtos.AuthenticationRequest;
@@ -10,9 +9,7 @@ import com.sigma.gym.repository.RoleRepository;
 import com.sigma.gym.repository.UserRepository;
 import com.sigma.gym.security.JwtService;
 
-import jakarta.annotation.PostConstruct;
 import jakarta.security.auth.message.AuthException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,13 +17,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -65,18 +62,20 @@ public class AuthenticationService {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(Collections.singleton(memberRole));
+        user.setRoles(List.of(memberRole)); // ✅ Cambiado a lista
 
         userRepository.save(user);
 
         String token = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(
-                token,
-                user.getEmail(),
-                user.getUsername(),
-                user.getRoles().stream().map(Role::getName).collect(Collectors.toSet())
-        );
+        return AuthenticationResponse.builder()
+        .accessToken(token)
+        .email(user.getEmail())
+        .username(user.getUsername())
+        .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws Exception {
@@ -87,20 +86,23 @@ public class AuthenticationService {
                             request.getPassword()
                     )
             );
+
             User user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new Exception("User not found"));
 
             String token = jwtService.generateToken(user);
 
-            return new AuthenticationResponse(
-                    token,
-                    user.getEmail(),
-                    user.getUsername(),
-                    user.getRoles().stream().map(Role::getName).collect(Collectors.toSet())
-            );
+            return AuthenticationResponse.builder()
+        .accessToken(token)
+        .email(user.getEmail())
+        .username(user.getUsername())
+        .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .build();
+
         } catch (AuthenticationException e) {
             throw new AuthException("Invalid email or password");
         }
     }
-    
 }

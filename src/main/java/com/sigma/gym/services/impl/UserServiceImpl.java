@@ -1,6 +1,8 @@
 package com.sigma.gym.services.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sigma.gym.controllers.auth.dtos.RegisterRequest;
+import com.sigma.gym.entity.MembershipType;
 import com.sigma.gym.entity.Role;
 import com.sigma.gym.entity.User;
 import com.sigma.gym.exceptions.UserException;
+import com.sigma.gym.repository.MembershipTypeRepository;
 import com.sigma.gym.repository.RoleRepository;
 import com.sigma.gym.repository.UserRepository;
 import com.sigma.gym.services.UserService;
@@ -21,6 +25,9 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
+    @Autowired
+    private MembershipTypeRepository membershipTypeRepository;
+
 
     @Autowired
     private UserRepository userRepository;
@@ -31,43 +38,47 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Transactional
-    public User createUser(RegisterRequest request) throws Exception {
-        try {
-            if (userRepository.existsByUsername(request.getUsername())) {
-                throw new UserException("El usuario " + request.getUsername() + " ya existe");
-            }
-
-            if (userRepository.existsByEmail(request.getEmail())) {
-                throw new UserException("El email " + request.getEmail() + " ya está registrado.");
-            }
-
-            Role role = roleRepository.findById(request.getRoleId())
-                    .orElseThrow(() -> new UserException("Rol no encontrado con ID: " + request.getRoleId()));
-
-            User user = new User(
-                    null,
-                    request.getUsername(),
-                    request.getFirstName(),
-                    request.getLastName(),
-                    request.getEmail(),
-                    passwordEncoder.encode(request.getPassword()),
-                    role,
-                    new ArrayList<>(), // orders
-                    new ArrayList<>(), // progressHistory
-                    new ArrayList<>(), // workoutPlans
-                    new ArrayList<>(), // asistencia (si tenés)
-                    new ArrayList<>()  // compras o lo que falte
-            );
-
-            return userRepository.save(user);
-
-        } catch (UserException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new Exception("[UserService.createUser] -> " + e.getMessage());
+ @Transactional
+public User createUser(RegisterRequest request) throws Exception {
+    try {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new UserException("El usuario " + request.getUsername() + " ya existe");
         }
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new UserException("El email " + request.getEmail() + " ya está registrado.");
+        }
+
+        Role role = roleRepository.findById(request.getRoleId())
+                .orElseThrow(() -> new UserException("Rol no encontrado con ID: " + request.getRoleId()));
+
+        MembershipType membershipType = membershipTypeRepository.findByName(request.getMembershipType())
+                .orElseThrow(() -> new RuntimeException("Tipo de membresía inválido"));
+
+        User user = User.builder()
+                .username(request.getUsername())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .roles(List.of(role)) // corregido
+                .startDate(LocalDate.now())
+                .membershipType(membershipType)
+                .isActive(true)
+                .workoutPlans(new ArrayList<>())
+                .progressHistory(new ArrayList<>())
+                .attendanceRecords(new ArrayList<>())
+                .build();
+
+        return userRepository.save(user);
+
+    } catch (UserException e) {
+        throw e;
+    } catch (Exception e) {
+        throw new Exception("[UserService.createUser] -> " + e.getMessage());
     }
+}
+
 
     public User getUserByUsername(String username) throws Exception {
         try {

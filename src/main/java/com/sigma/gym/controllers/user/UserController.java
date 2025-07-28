@@ -1,4 +1,4 @@
-package com.uade.tpo.marketplace.controllers.users;
+package com.sigma.gym.controllers.user;
 
 import java.util.Optional;
 
@@ -10,21 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.sigma.gym.entity.User;
 import com.sigma.gym.services.UserService;
-import com.sigma.gym.entities.User;
-import com.sigma.gym.dto.UserDto;
 import com.sigma.gym.exceptions.UserException;
-
-import entity.ResponseData;
-
+import com.sigma.gym.mappers.UserMapper;
+import com.sigma.gym.response.ResponseData; // Asegurate que esté bien el import
 
 @RestController
 @RequestMapping("/users")
@@ -43,57 +35,52 @@ public class UserController {
             return ResponseEntity.ok(userService.getUsers(PageRequest.of(0, Integer.MAX_VALUE)));
         return ResponseEntity.ok(userService.getUsers(PageRequest.of(page, size)));
     }
-     
+
     @GetMapping("/data")
     public ResponseEntity<ResponseData<?>> getUserData(@AuthenticationPrincipal UserDetails userDetails) {
         try {
             User authUser = userService.getUserByUsername(userDetails.getUsername());
-            UserDTO userDTO = authUser.toDTO();
+            UserDTO userDTO = UserMapper.toDto(authUser); // Asegurate de tener este método o usar un Mapper
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(userDTO));
+        } catch (UserException error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
+        } catch (Exception error) {
+            System.out.printf("[UserController.getUserData] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseData.error("No se pudo encontrar el usuario"));
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseData<?>> updateUser(@AuthenticationPrincipal UserDetails userDetails,
+                                                      @RequestBody UserDTO userDTO) {
+        try {
+            User authUser = userService.getUserByUsername(userDetails.getUsername());
+            User user = UserMapper.toEntity(userDTO); // Asegurate de tener este método o usar un Mapper
+            authUser.updateData(user);
+
+            String password = user.getPassword();
+            if (!"null".equals(password)) {
+                authUser.setPassword(passwordEncoder.encode(password));
+            }
+
+            User updatedUser = userService.updateUser(authUser);
+          UserDTO updatedUserDTO = UserMapper.toDto(updatedUser);
+
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(updatedUserDTO));
 
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
         } catch (Exception error) {
-            System.out.printf("[UserController.getUserData] -> %s", error.getMessage() );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo encontrar el usuario"));
+            System.out.printf("[UserController.updateUser] -> %s", error.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResponseData.error("No se pudo actualizar el usuario"));
         }
     }
-    
-    @PutMapping("/update")
-    public ResponseEntity<ResponseData<?>> updateUser(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserDTO userDTO) {
-        try {
-            User authUser = userService.getUserByUsername(userDetails.getUsername());
 
-            User user = userDTO.toEntity();
-
-            authUser.updateData(user);
-
-            String password = user.getPassword();
-
-            if(!password.equals("null")) authUser.setPassword(passwordEncoder.encode(password));
-
-                User updatedUser = userService.updateUser(authUser);
-
-                UserDTO updatedUserDTO = updatedUser.toDTO();
-
-                return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(updatedUserDTO));
-
-            }catch (UserException error) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
-      
-            } catch (Exception error) {
-                System.out.printf("[UserController.updateUser] -> %s", error.getMessage() );
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ResponseData.error("No se pudo actualizar el usuario"));
-        @GetMapping("/{userId}")
-        public ResponseEntity<User> getUserById(@PathVariable Long userId) throws Exception {
-            Optional<User> result = userService.getUserById(userId);
-            if (result.isPresent())
-                return ResponseEntity.ok(result.get());
-            return ResponseEntity.noContent().build();
-        }
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) throws Exception {
+        Optional<User> result = userService.getUserById(userId);
+        return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
-            return ResponseEntity.ok(result.get());
-        return ResponseEntity.noContent().build();
-    }
-
-    
+}

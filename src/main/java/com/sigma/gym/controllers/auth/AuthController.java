@@ -4,8 +4,8 @@ package com.sigma.gym.controllers.auth;
 import com.sigma.gym.controllers.auth.dtos.AuthenticationRequest;
 import com.sigma.gym.controllers.auth.dtos.AuthenticationResponse;
 import com.sigma.gym.controllers.auth.dtos.RegisterRequest;
-import com.sigma.gym.entity.ResponseData;
 import com.sigma.gym.exceptions.UserException;
+import com.sigma.gym.response.ResponseData;
 import com.sigma.gym.services.auth.AuthenticationService;
 
 import jakarta.security.auth.message.AuthException;
