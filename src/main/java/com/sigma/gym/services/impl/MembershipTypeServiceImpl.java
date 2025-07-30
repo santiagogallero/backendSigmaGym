@@ -1,6 +1,6 @@
 package com.sigma.gym.services.impl;
 
-import com.sigma.gym.entity.MembershipType;
+import com.sigma.gym.entity.MembershipTypeEntity;
 import com.sigma.gym.repository.MembershipTypeRepository;
 import com.sigma.gym.services.MembershipTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +16,22 @@ public class MembershipTypeServiceImpl implements MembershipTypeService {
     private MembershipTypeRepository membershipTypeRepository;
 
     @Override
-    public MembershipType create(MembershipType membershipType) {
+    public MembershipTypeEntity create(MembershipTypeEntity membershipType) {
         return membershipTypeRepository.save(membershipType);
     }
 
     @Override
-    public List<MembershipType> getAll() {
+    public List<MembershipTypeEntity> getAll() {
         return membershipTypeRepository.findAll();
     }
 
     @Override
-    public Optional<MembershipType> getById(Long id) {
+    public Optional<MembershipTypeEntity> getById(Long id) {
         return membershipTypeRepository.findById(id);
     }
 
     @Override
-    public Optional<MembershipType> getByName(String name) {
+    public Optional<MembershipTypeEntity> getByName(String name) {
         return membershipTypeRepository.findByName(name);
     }
 

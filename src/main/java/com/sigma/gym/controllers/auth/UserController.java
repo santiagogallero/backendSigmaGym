@@ -5,14 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import com.sigma.gym.entity.User;
+import com.sigma.gym.entity.UserEntity;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getCurrentUser(@AuthenticationPrincipal User user) {
+    public ResponseEntity<UserEntity> getCurrentUser(@AuthenticationPrincipal UserEntity user) {
         return ResponseEntity.ok(user);
     }
 }

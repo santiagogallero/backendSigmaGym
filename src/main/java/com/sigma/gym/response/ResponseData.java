@@ -25,3 +25,4 @@ public class ResponseData<T> {
         return new ResponseData<>(false, message, null);
     }
 }
+

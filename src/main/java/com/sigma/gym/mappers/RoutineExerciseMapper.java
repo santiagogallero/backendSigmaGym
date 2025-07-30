@@ -2,15 +2,15 @@ package com.sigma.gym.mappers;
 
 
 
-import com.sigma.gym.controllers.DTOs.RoutineExerciseDto;
-import com.sigma.gym.entity.RoutineExercise;
+import com.sigma.gym.DTOs.RoutineExerciseDTO;
+import com.sigma.gym.entity.RoutineExerciseEntity;
 
 public class RoutineExerciseMapper {
 
-    public static RoutineExerciseDto toDto(RoutineExercise re) {
+    public static RoutineExerciseDTO toDto(RoutineExerciseEntity re) {
         if (re == null) return null;
 
-        return RoutineExerciseDto.builder()
+        return RoutineExerciseDTO.builder()
                 .id(re.getId())
                 .routineId(re.getRoutine().getId())
                 .exerciseId(re.getExercise().getId())
@@ -22,12 +22,12 @@ public class RoutineExerciseMapper {
                 .build();
     }
 
-    public static RoutineExercise toEntity(RoutineExerciseDto dto) {
+    public static RoutineExerciseEntity toEntity(RoutineExerciseDTO dto) {
         if (dto == null) return null;
 
         // Tené en cuenta: acá necesitarías pasar las entidades Exercise y Routine reales
         // desde el service, porque no las podés construir solo con los IDs.
-        RoutineExercise re = new RoutineExercise();
+        RoutineExerciseEntity re = new RoutineExerciseEntity();
         re.setId(dto.getId());
         re.setIsWarmup(dto.getIsWarmup());
         re.setSets(dto.getSets());

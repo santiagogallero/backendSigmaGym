@@ -1,7 +1,7 @@
 package com.sigma.gym.mappers;
 
-import com.sigma.gym.controllers.DTOs.RoutineLogDto;
-import com.sigma.gym.entity.RoutineLog;
+import com.sigma.gym.DTOs.RoutineLogDTO;
+import com.sigma.gym.entity.RoutineLogEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 
 public class RoutineLogMapper {
 
-    public static RoutineLogDto toDto(RoutineLog entity) {
+    public static RoutineLogDTO toDto(RoutineLogEntity entity) {
         if (entity == null) {
             return null;
         }
 
-        return RoutineLogDto.builder()
+        return RoutineLogDTO.builder()
                 .id(entity.getId())
                 .workoutLogId(entity.getWorkoutLog() != null ? entity.getWorkoutLog().getId() : null)
                 .routineId(entity.getRoutine() != null ? entity.getRoutine().getId() : null)
@@ -30,10 +30,10 @@ public class RoutineLogMapper {
                 .build();
     }
 
-    public static RoutineLog toEntity(RoutineLogDto dto) {
+    public static RoutineLogEntity toEntity(RoutineLogDTO dto) {
     if (dto == null) return null;
 
-    RoutineLog log = RoutineLog.builder()
+    RoutineLogEntity log = RoutineLogEntity.builder()
         .id(dto.getId())
         .startTime(dto.getStartTime())
         .endTime(dto.getEndTime())
@@ -47,7 +47,7 @@ public class RoutineLogMapper {
     return log;
 }
 
-    public static List<RoutineLogDto> toDtoList(List<RoutineLog> entities) {
+    public static List<RoutineLogDTO> toDtoList(List<RoutineLogEntity> entities) {
         if (entities == null) {
             return null;
         }

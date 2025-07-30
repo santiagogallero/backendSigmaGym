@@ -1,12 +1,13 @@
 package com.sigma.gym.services;
 
-import com.sigma.gym.entity.Routine;
+import com.sigma.gym.entity.RoutineEntity;
 
 import java.util.List;
 
 public interface RoutineService {
-    Routine saveRoutine(Routine routine);
-    List<Routine> getRoutinesByUserId(Long userId);
-    Routine getRoutineById(Long id);
+    RoutineEntity saveRoutine(RoutineEntity routine);
+    List<RoutineEntity> getRoutinesByTrainerId(Long trainerId);
+
+    RoutineEntity getRoutineById(Long id);
     void deleteRoutine(Long id);
 }

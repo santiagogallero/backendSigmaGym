@@ -4,7 +4,7 @@ package com.sigma.gym.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.sigma.gym.config.JwtProperties;
-import com.sigma.gym.entity.User;
+import com.sigma.gym.entity.UserEntity;
 
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class JwtService {
         this.jwtProperties = jwtProperties;
     }
 
-    public String generateToken(User user) {
+    public String generateToken(UserEntity user) {
         return JWT.create()
                 .withSubject(user.getEmail())
                 .withClaim("roles", user.getRoles().stream()
@@ -38,7 +38,7 @@ public class JwtService {
                 .getSubject();
     }
 
-    public boolean isTokenValid(String token, User user) {
+    public boolean isTokenValid(String token, UserEntity user) {
         String username = extractUsername(token);
         return username.equals(user.getEmail());
     }

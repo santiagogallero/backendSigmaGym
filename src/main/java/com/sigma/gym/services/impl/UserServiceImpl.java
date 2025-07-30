@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sigma.gym.controllers.auth.dtos.RegisterRequest;
-import com.sigma.gym.entity.MembershipType;
-import com.sigma.gym.entity.Role;
-import com.sigma.gym.entity.User;
+import com.sigma.gym.entity.MembershipTypeEntity;
+import com.sigma.gym.entity.RoleEntity;
+import com.sigma.gym.entity.UserEntity;
 import com.sigma.gym.exceptions.UserException;
 import com.sigma.gym.repository.MembershipTypeRepository;
 import com.sigma.gym.repository.RoleRepository;
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
  @Transactional
-public User createUser(RegisterRequest request) throws Exception {
+public UserEntity createUser(RegisterRequest request) throws Exception {
     try {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new UserException("El usuario " + request.getUsername() + " ya existe");
@@ -49,13 +49,13 @@ public User createUser(RegisterRequest request) throws Exception {
             throw new UserException("El email " + request.getEmail() + " ya está registrado.");
         }
 
-        Role role = roleRepository.findById(request.getRoleId())
+        RoleEntity role = roleRepository.findById(request.getRoleId())
                 .orElseThrow(() -> new UserException("Rol no encontrado con ID: " + request.getRoleId()));
 
-        MembershipType membershipType = membershipTypeRepository.findByName(request.getMembershipType())
+        MembershipTypeEntity membershipType = membershipTypeRepository.findByName(request.getMembershipType())
                 .orElseThrow(() -> new RuntimeException("Tipo de membresía inválido"));
 
-        User user = User.builder()
+        UserEntity user = UserEntity.builder()
                 .username(request.getUsername())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -80,7 +80,7 @@ public User createUser(RegisterRequest request) throws Exception {
 }
 
 
-    public User getUserByUsername(String username) throws Exception {
+    public UserEntity getUserByUsername(String username) throws Exception {
         try {
             return userRepository.findByUsername(username)
                     .orElseThrow(() -> new UserException("Usuario no encontrado"));
@@ -91,7 +91,7 @@ public User createUser(RegisterRequest request) throws Exception {
         }
     }
 
-    public Page<User> getUsers(PageRequest pageable) throws Exception {
+    public Page<UserEntity> getUsers(PageRequest pageable) throws Exception {
         try {
             return userRepository.findAll(pageable);
         } catch (Exception e) {
@@ -99,7 +99,7 @@ public User createUser(RegisterRequest request) throws Exception {
         }
     }
 
-    public User updateUser(User user) throws Exception {
+    public UserEntity updateUser(UserEntity user) throws Exception {
         try {
             return userRepository.save(user);
         } catch (Exception e) {
@@ -107,7 +107,7 @@ public User createUser(RegisterRequest request) throws Exception {
         }
     }
 
-    public Optional<User> getUserById(Long userId) throws Exception {
+    public Optional<UserEntity> getUserById(Long userId) throws Exception {
         try {
             return userRepository.findById(userId);
         } catch (Exception e) {

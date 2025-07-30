@@ -1,19 +1,19 @@
 package com.sigma.gym.mappers;
 
-import com.sigma.gym.controllers.DTOs.RoutineExerciseLogDto;
-import com.sigma.gym.entity.RoutineExerciseLog;
+import com.sigma.gym.DTOs.RoutineExerciseLogDTO;
+import com.sigma.gym.entity.RoutineExerciseLogEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RoutineExerciseLogMapper {
 
-    public static RoutineExerciseLogDto toDto(RoutineExerciseLog entity) {
+    public static RoutineExerciseLogDTO toDto(RoutineExerciseLogEntity entity) {
         if (entity == null) {
             return null;
         }
 
-        return RoutineExerciseLogDto.builder()
+        return RoutineExerciseLogDTO.builder()
                 .id(entity.getId())
                 .routineLogId(entity.getRoutineLog() != null ? entity.getRoutineLog().getId() : null)
                 .exerciseId(entity.getExercise() != null ? entity.getExercise().getId() : null)
@@ -28,12 +28,12 @@ public class RoutineExerciseLogMapper {
                 .build();
     }
 
-    public static RoutineExerciseLog toEntity(RoutineExerciseLogDto dto) {
+    public static RoutineExerciseLogEntity toEntity(RoutineExerciseLogDTO dto) {
         if (dto == null) {
             return null;
         }
 
-        return RoutineExerciseLog.builder()
+        return RoutineExerciseLogEntity.builder()
                 .id(dto.getId())
                 .repsPerformed(dto.getRepsPerformed())
                 .setsPerformed(dto.getSetsPerformed())
@@ -45,7 +45,7 @@ public class RoutineExerciseLogMapper {
                 .build();
     }
 
-    public static List<RoutineExerciseLogDto> toDtoList(List<RoutineExerciseLog> entities) {
+    public static List<RoutineExerciseLogDTO> toDtoList(List<RoutineExerciseLogEntity> entities) {
         if (entities == null) {
             return List.of();
         }
@@ -54,7 +54,7 @@ public class RoutineExerciseLogMapper {
                 .collect(Collectors.toList());
     }
 
-    public static List<RoutineExerciseLog> toEntityList(List<RoutineExerciseLogDto> dtos) {
+    public static List<RoutineExerciseLogEntity> toEntityList(List<RoutineExerciseLogDTO> dtos) {
         if (dtos == null) {
             return List.of();
         }

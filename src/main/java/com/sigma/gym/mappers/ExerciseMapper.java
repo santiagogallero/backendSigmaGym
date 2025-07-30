@@ -1,14 +1,14 @@
 package com.sigma.gym.mappers;
 
-import com.sigma.gym.controllers.DTOs.ExerciseDto;
-import com.sigma.gym.entity.Exercise;
+import com.sigma.gym.DTOs.ExerciseDTO;
+import com.sigma.gym.entity.ExerciseEntity;
 
 public class ExerciseMapper {
 
-    public static ExerciseDto toDto(Exercise exercise) {
+    public static ExerciseDTO toDto(ExerciseEntity exercise) {
         if (exercise == null) return null;
 
-        return ExerciseDto.builder()
+        return ExerciseDTO.builder()
                 .id(exercise.getId())
                 .name(exercise.getName())
                 .description(exercise.getDescription())
@@ -21,10 +21,10 @@ public class ExerciseMapper {
                 .build();
     }
 
-    public static Exercise toEntity(ExerciseDto dto) {
+    public static ExerciseEntity toEntity(ExerciseDTO dto) {
         if (dto == null) return null;
 
-        return Exercise.builder()
+        return ExerciseEntity.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())

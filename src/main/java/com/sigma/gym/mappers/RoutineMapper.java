@@ -1,12 +1,12 @@
 package com.sigma.gym.mappers;
 
-import com.sigma.gym.controllers.DTOs.RoutineDTO;
-import com.sigma.gym.entity.Routine;
-import com.sigma.gym.entity.WorkoutPlan;
+import com.sigma.gym.DTOs.RoutineDTO;
+import com.sigma.gym.entity.RoutineEntity;
+import com.sigma.gym.entity.WorkoutPlanEntity;
 
 public class RoutineMapper {
 
-    public static RoutineDTO toDto(Routine entity) {
+    public static RoutineDTO toDto(RoutineEntity entity) {
         if (entity == null) return null;
 
         return RoutineDTO.builder()
@@ -20,10 +20,10 @@ public class RoutineMapper {
                 .build();
     }
 
-    public static Routine toEntity(RoutineDTO dto, WorkoutPlan workoutPlan) {
+    public static RoutineEntity toEntity(RoutineDTO dto, WorkoutPlanEntity workoutPlan) {
         if (dto == null) return null;
 
-        return Routine.builder()
+        return RoutineEntity.builder()
                 .id(dto.getId())
                 .name(dto.getName())
                 .description(dto.getDescription())

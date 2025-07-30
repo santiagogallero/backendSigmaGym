@@ -1,7 +1,7 @@
 // src/main/java/com/sigma/gym/security/JwtAuthenticationFilter.java
 package com.sigma.gym.security;
 
-import com.sigma.gym.entity.User;
+import com.sigma.gym.entity.UserEntity;
 import com.sigma.gym.repository.UserRepository;
 
 import jakarta.servlet.FilterChain;
@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String email = jwtService.extractUsername(token);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = userRepository.findByEmail(email)
+            UserEntity user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado con email: " + email));
 
             if (user != null && jwtService.isTokenValid(token, user)) {

@@ -3,8 +3,8 @@ package com.sigma.gym.services.auth;
 import com.sigma.gym.controllers.auth.dtos.AuthenticationRequest;
 import com.sigma.gym.controllers.auth.dtos.AuthenticationResponse;
 import com.sigma.gym.controllers.auth.dtos.RegisterRequest;
-import com.sigma.gym.entity.Role;
-import com.sigma.gym.entity.User;
+import com.sigma.gym.entity.RoleEntity;
+import com.sigma.gym.entity.UserEntity;
 import com.sigma.gym.repository.RoleRepository;
 import com.sigma.gym.repository.UserRepository;
 import com.sigma.gym.security.JwtService;
@@ -50,15 +50,15 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse register(RegisterRequest request) throws Exception {
-        Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
+        Optional<UserEntity> existingUser = userRepository.findByEmail(request.getEmail());
         if (existingUser.isPresent()) {
             throw new Exception("Email already in use");
         }
 
-        Role memberRole = roleRepository.findByName("MEMBER")
+        RoleEntity memberRole = roleRepository.findByName("MEMBER")
                 .orElseThrow(() -> new RuntimeException("Role MEMBER not found"));
 
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -72,7 +72,7 @@ public class AuthenticationService {
         .accessToken(token)
         .email(user.getEmail())
         .username(user.getUsername())
-        .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
+        .roles(user.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toSet()))
         .firstName(user.getFirstName())
         .lastName(user.getLastName())
         .build();
@@ -87,7 +87,7 @@ public class AuthenticationService {
                     )
             );
 
-            User user = userRepository.findByEmail(request.getEmail())
+            UserEntity user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new Exception("User not found"));
 
             String token = jwtService.generateToken(user);
@@ -96,7 +96,7 @@ public class AuthenticationService {
         .accessToken(token)
         .email(user.getEmail())
         .username(user.getUsername())
-        .roles(user.getRoles().stream().map(Role::getName).collect(Collectors.toSet()))
+        .roles(user.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toSet()))
         .firstName(user.getFirstName())
         .lastName(user.getLastName())
         .build();
