@@ -12,6 +12,7 @@ public class Progress {
     private Long userId;
     private LocalDate date;
     private Double weight;
+    private String notes;
     private Double muscleMass;
     private Double fatPercentage;
 }

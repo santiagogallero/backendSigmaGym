@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sigma.gym.DTOs.MembershipTypeDTO;
+import com.sigma.gym.DTOs.ProgressDTO;
 import com.sigma.gym.DTOs.RoleDTO;
+import com.sigma.gym.DTOs.WorkoutPlanDTO;
 import com.sigma.gym.model.MembershipType;
-import com.sigma.gym.model.Progress;
-import com.sigma.gym.model.Role;
-import com.sigma.gym.model.WorkoutPlan;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -42,14 +42,14 @@ public class UserDTO {
     private LocalDate lastVisitDate;
 
     @JsonIgnore
-    private MembershipType membershipType;
+    private MembershipTypeDTO membershipType;
 
     @JsonIgnore
     private Boolean isActive;
 
     @JsonIgnore
-    private List<WorkoutPlan> workoutPlans;
+    private List<WorkoutPlanDTO> workoutPlans;
 
     @JsonIgnore
-    private List<Progress> progressHistory;
+    private List<ProgressDTO> progressHistory;
 }

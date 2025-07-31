@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import com.sigma.gym.entity.UserEntity;
 import com.sigma.gym.services.UserService;
 import com.sigma.gym.exceptions.UserException;
-import com.sigma.gym.mappers.UserMapperEntity;
+import com.sigma.gym.mappers.UserMapper;
 import com.sigma.gym.response.ResponseData; // Asegurate que esté bien el import
 
 @RestController
@@ -40,7 +40,7 @@ public class AuthUserController {
     public ResponseEntity<ResponseData<?>> getUserData(@AuthenticationPrincipal UserDetails userDetails) {
         try {
             UserEntity authUser = userService.getUserByUsername(userDetails.getUsername());
-            UserDTO userDTO = UserMapperEntity.toDto(authUser); // Asegurate de tener este método o usar un Mapper
+            UserDTO userDTO = UserMapper.toDto(authUser); // Asegurate de tener este método o usar un Mapper
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(userDTO));
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
@@ -56,7 +56,7 @@ public class AuthUserController {
                                                       @RequestBody UserDTO userDTO) {
         try {
             UserEntity authUser = userService.getUserByUsername(userDetails.getUsername());
-            UserEntity user = UserMapperEntity.toEntity(userDTO); // Asegurate de tener este método o usar un Mapper
+            UserEntity user = UserMapper.toEntity(userDTO); // Asegurate de tener este método o usar un Mapper
             authUser.updateData(user);
 
             String password = user.getPassword();
@@ -65,7 +65,7 @@ public class AuthUserController {
             }
 
             UserEntity updatedUser = userService.updateUser(authUser);
-          UserDTO updatedUserDTO = UserMapperEntity.toDto(updatedUser);
+          UserDTO updatedUserDTO = UserMapper.toDto(updatedUser);
 
             return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(updatedUserDTO));
 

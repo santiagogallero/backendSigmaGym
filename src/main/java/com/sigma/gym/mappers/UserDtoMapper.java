@@ -14,19 +14,24 @@ public class UserDtoMapper {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
-               .roles(
-    user.getRoles() != null
-        ? user.getRoles().stream()
-           .map(RoleMapper::toDto)// <--- convierte del modelo al DTO
-            .toList()
-        : null
-)
-
+                .roles(
+                    user.getRoles() != null
+                        ? user.getRoles().stream()
+                           .map(RoleMapper::toDto)
+                            .toList()
+                        : null
+                )
                 .startDate(user.getStartDate())
                 .lastVisitDate(user.getLastVisitDate())
-                .membershipType(user.getMembershipType())
+                .membershipType(user.getMembershipType() != null 
+                    ? MembershipTypeMapper.toDto(user.getMembershipType())
+                    : null)
                 .isActive(user.getIsActive())
-                .workoutPlans(user.getAssignedPlans()) // 👈 nombre correcto según tu modelo
+                .workoutPlans(user.getAssignedPlans() != null
+                    ? user.getAssignedPlans().stream()
+                        .map(WorkoutPlanMapper::toDto) // Convert WorkoutPlan → WorkoutPlanDTO
+                        .toList()
+                    : null)
                 .build();
     }
 
@@ -39,7 +44,6 @@ public class UserDtoMapper {
                 .firstName(dto.getFirstName())
                 .lastName(dto.getLastName())
                 .email(dto.getEmail())
-                // ⚠️ dto.getPassword() no se guarda en el modelo User
                 .roles(
                     dto.getRoles() != null 
                         ? dto.getRoles().stream()
@@ -47,12 +51,17 @@ public class UserDtoMapper {
                             .toList()
                         : null
                 )
-
                 .startDate(dto.getStartDate())
                 .lastVisitDate(dto.getLastVisitDate())
-                .membershipType(dto.getMembershipType())
+                .membershipType(dto.getMembershipType() != null
+                    ? MembershipTypeMapper.toDomain(dto.getMembershipType())
+                    : null)
                 .isActive(dto.getIsActive())
-                .assignedPlans(dto.getWorkoutPlans()) // 👈 corresponde con el atributo del modelo
+                .assignedPlans(dto.getWorkoutPlans() != null
+                    ? dto.getWorkoutPlans().stream()
+                        .map(WorkoutPlanMapper::toDomain) // Convert WorkoutPlanDTO → WorkoutPlan
+                        .toList()
+                    : null)
                 .build();
     }
 }

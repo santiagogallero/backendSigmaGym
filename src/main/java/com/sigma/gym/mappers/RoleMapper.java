@@ -2,9 +2,8 @@ package com.sigma.gym.mappers;
 import com.sigma.gym.DTOs.RoleDTO;
 import com.sigma.gym.entity.RoleEntity;
 import com.sigma.gym.model.Role;
-
 public class RoleMapper {
-    
+
     public static Role toDomain(RoleEntity entity) {
         if (entity == null) return null;
         return Role.builder()
@@ -35,5 +34,18 @@ public class RoleMapper {
                 .id(dto.getId())
                 .name(dto.getName())
                 .build();
+    }
+    public static RoleEntity toEntity(RoleDTO dto) {
+        if (dto == null) return null;
+        return RoleEntity.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                // ...map other fields...
+                .build();
+    }
+
+    // 💡 Este es el que te faltaba
+    public static RoleDTO toDto(RoleEntity entity) {
+        return toDto(toDomain(entity));
     }
 }

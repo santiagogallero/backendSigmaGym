@@ -2,6 +2,7 @@ package com.sigma.gym.model;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,7 +15,8 @@ public class WorkoutPlan {
     private String goal;
     private String difficulty;
     private String notes;
-    private String createdAt;
+    private LocalDate createdAt;
     private User trainer;
     private List<Routine> routines;
+     private List<User> members;  
 }

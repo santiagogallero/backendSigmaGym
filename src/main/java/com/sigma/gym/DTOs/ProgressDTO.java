@@ -15,5 +15,6 @@ public class ProgressDTO {
     private Double weight;
     private Double bodyFatPercentage;
     private Integer muscleMass;
+    private String notes; // ✅ mejor usar String que Object para notas, así es más flexible
     private Integer waterPercentage;
 }
