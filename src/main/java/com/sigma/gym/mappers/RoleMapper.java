@@ -12,11 +12,11 @@ public class RoleMapper {
                 .build();
     }
 
-    public static RoleEntity toEntity(Role role) {
-        if (role == null) return null;
+    public static RoleEntity toEntity(Role domain) {
+        if (domain == null) return null;
         return RoleEntity.builder()
-                .id(role.getId())
-                .name(role.getName())
+                .id(domain.getId())
+                .name(domain.getName())
                 .build();
     }
 
@@ -46,6 +46,10 @@ public class RoleMapper {
 
     // 💡 Este es el que te faltaba
     public static RoleDTO toDto(RoleEntity entity) {
-        return toDto(toDomain(entity));
+       if(entity == null) return null;
+       return RoleDTO.builder()
+               .id(entity.getId())
+               .name(entity.getName())
+               .build();
     }
 }

@@ -16,12 +16,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+
 public class ProgressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

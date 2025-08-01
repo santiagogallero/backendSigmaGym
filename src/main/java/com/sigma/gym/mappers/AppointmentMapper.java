@@ -2,6 +2,7 @@ package com.sigma.gym.mappers;
 
 import com.sigma.gym.DTOs.AppointmentDTO;
 import com.sigma.gym.entity.AppointmentEntity;
+import com.sigma.gym.entity.UserEntity;
 import com.sigma.gym.model.Appointment;
 
 public class AppointmentMapper {
@@ -23,8 +24,14 @@ public class AppointmentMapper {
 
         AppointmentEntity entity = new AppointmentEntity();
         entity.setId(model.getId());
-        entity.setUserId(model.getUserId());
-        entity.setTrainerId(model.getTrainerId());
+        UserEntity user = new UserEntity();
+        user.setId(model.getUserId());
+        entity.setUser(user);
+
+        UserEntity trainer = new UserEntity();
+        trainer.setId(model.getTrainerId());
+        entity.setTrainer(trainer);
+
         entity.setDate(model.getDate());
         entity.setStatus(model.getStatus());
         return entity;

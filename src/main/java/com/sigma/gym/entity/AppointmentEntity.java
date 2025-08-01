@@ -1,5 +1,6 @@
 package com.sigma.gym.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sigma.gym.model.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,18 +22,37 @@ public class AppointmentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
+    // ✅ CAMBIO: Usar relaciones en lugar de IDs primitivos
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
+    private UserEntity user;
 
-    @Column(nullable = false)
-    private Long trainerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "trainer_id", nullable = false, referencedColumnName = "id")
+    private UserEntity trainer;
 
-    @Column(nullable = false)
+    @Column(name = "appointment_date", nullable = false)
     private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private AppointmentStatus status;
 
-    // Getters and setters
+    @Column(name = "notes", length = 500)
+    private String notes;
+
+    @Column(name = "created_at", nullable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    // ✅ Métodos helper que respetan SRP
+    public Long getUserId() {
+        return user != null ? user.getId() : null;
+    }
+
+    public Long getTrainerId() {
+        return trainer != null ? trainer.getId() : null;
+    }
+
+
 }

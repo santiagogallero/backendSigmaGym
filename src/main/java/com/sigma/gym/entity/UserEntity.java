@@ -10,12 +10,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
 import lombok.*;
-
+@Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+
 public class UserEntity implements UserDetails {
        @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
