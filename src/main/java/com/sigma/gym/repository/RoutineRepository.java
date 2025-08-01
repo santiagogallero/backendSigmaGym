@@ -1,15 +1,31 @@
 package com.sigma.gym.repository;
+
 import com.sigma.gym.entity.RoutineEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 @Repository
 public interface RoutineRepository extends JpaRepository<RoutineEntity, Long> {
-  @Query("SELECT r FROM Routine r WHERE r.workoutPlan.trainer.id = :trainerId")
-List<RoutineEntity> findByTrainerId(@Param("trainerId") Long trainerId);
-// si la rutina está asociada a un usuario
+
+    // ❌ PROBLEMA: Si RoutineEntity no tiene campo 'trainerId' directo
+    // List<RoutineEntity> findByTrainerId(Long trainerId);
+
+    // ✅ OPCIONES CORRECTAS:
+
+    // Opción 1: Si hay relación con WorkoutPlan que tiene trainer
+    List<RoutineEntity> findByWorkoutPlanTrainerId(Long trainerId);
+
+    // Opción 2: Si hay relación directa con trainer (poco probable)
+    // List<RoutineEntity> findByTrainerId(Long trainerId);
+
+    // Opción 3: Por WorkoutPlan
+    List<RoutineEntity> findByWorkoutPlanId(Long workoutPlanId);
+
+    // Opción 4: Por día de la semana
+    List<RoutineEntity> findByDayOfWeek(String dayOfWeek);
+
+    // Opción 5: Métodos básicos seguros
+    List<RoutineEntity> findByNameContainingIgnoreCase(String name);
 }
