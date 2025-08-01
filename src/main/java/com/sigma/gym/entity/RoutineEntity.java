@@ -1,5 +1,6 @@
 package com.sigma.gym.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,14 +19,15 @@ public class RoutineEntity {
 
     private String name;
     private String description;
-    private Integer duration; // in minutes
+    private Integer duration;
     private String difficulty;
-    private String dayOfWeek; // "Monday", "Wednesday", etc.
+    private String dayOfWeek;
 
     @ManyToOne
     @JoinColumn(name = "workout_plan_id", nullable = false)
     private WorkoutPlanEntity workoutPlan;
 
-    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("routine-exercises") // ✅ Controla serialización
     private List<RoutineExerciseEntity> routineExercises;
 }

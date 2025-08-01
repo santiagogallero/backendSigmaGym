@@ -38,4 +38,10 @@ public class RoutineExerciseLogEntity {
     private String notes;
 
     private Boolean completed;
+    
+    private String exerciseName; // útil para mostrar directo en el front
+    private Boolean isWarmup; // Indica si es un ejercicio de calentamiento
+    private Integer setsCompleted;
+    private Integer repsCompleted;
+
 }

@@ -15,6 +15,7 @@ public class RoutineExerciseEntity {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "routine_id")  // ✅ Especifica explícitamente el nombre
     private RoutineEntity routine;
 
     @ManyToOne
@@ -24,6 +25,15 @@ public class RoutineExerciseEntity {
     private Integer sets;
     private Integer reps;
     private Integer weight; // peso sugerido
-
+    private String exerciseName;
     private Boolean isWarmup; // true si es parte de calentamiento
+
+    // ✅ AGREGA MÉTODOS HELPER para obtener los IDs:
+    public Long getRoutineId() {
+        return routine != null ? routine.getId() : null;
+    }
+
+    public Long getExerciseId() {
+        return exercise != null ? exercise.getId() : null;
+    }
 }

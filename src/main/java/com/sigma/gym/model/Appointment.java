@@ -1,20 +1,19 @@
 package com.sigma.gym.model;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 import lombok.*;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WorkoutLog {
+public class Appointment {
     private Long id;
     private Long userId;
+    private Long trainerId;
     private LocalDateTime date;
-private String notes;
-    private Long workoutPlanId;
-    private List<RoutineLog> routineLogs;
+    private AppointmentStatus status;
 
-    private List<RoutineExerciseLog> routineExerciseLogs;
+    // Constructors, getters and setters
 }

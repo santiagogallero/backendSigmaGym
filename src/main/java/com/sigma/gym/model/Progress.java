@@ -14,5 +14,5 @@ public class Progress {
     private Double weight;
     private String notes;
     private Double muscleMass;
-    private Double fatPercentage;
+    private Double bodyFatPercentage;
 }

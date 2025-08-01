@@ -24,12 +24,12 @@ public class UserDtoMapper {
                 .startDate(user.getStartDate())
                 .lastVisitDate(user.getLastVisitDate())
                 .membershipType(user.getMembershipType() != null 
-                    ? MembershipTypeMapper.toDto(user.getMembershipType())
+                    ? MembershipTypeMapper.toDto(user.getMembershipType()) // ✅ FIXED: Use correct mapper method
                     : null)
                 .isActive(user.getIsActive())
                 .workoutPlans(user.getAssignedPlans() != null
                     ? user.getAssignedPlans().stream()
-                        .map(WorkoutPlanMapper::toDto) // Convert WorkoutPlan → WorkoutPlanDTO
+                        .map(WorkoutPlanMapper::toDto)
                         .toList()
                     : null)
                 .build();
@@ -54,12 +54,12 @@ public class UserDtoMapper {
                 .startDate(dto.getStartDate())
                 .lastVisitDate(dto.getLastVisitDate())
                 .membershipType(dto.getMembershipType() != null
-                    ? MembershipTypeMapper.toDomain(dto.getMembershipType())
+                    ? MembershipTypeMapper.toDomain(dto.getMembershipType()) // ✅ FIXED: Use correct mapper method
                     : null)
                 .isActive(dto.getIsActive())
                 .assignedPlans(dto.getWorkoutPlans() != null
                     ? dto.getWorkoutPlans().stream()
-                        .map(WorkoutPlanMapper::toDomain) // Convert WorkoutPlanDTO → WorkoutPlan
+                        .map(WorkoutPlanMapper::toDomain)
                         .toList()
                     : null)
                 .build();

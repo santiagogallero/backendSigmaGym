@@ -22,6 +22,9 @@ public class ExerciseMapper {
                 .sets(entity.getSets())
                 .reps(entity.getReps())
                 .videoUrl(entity.getVideoUrl())
+                .createdBy(entity.getCreatedBy() != null 
+                    ? UserMapper.toDomain(entity.getCreatedBy()) // Convert UserEntity → User
+                    : null)
                 .build();
     }
 
@@ -41,44 +44,9 @@ public class ExerciseMapper {
                 .sets(dto.getSets())
                 .reps(dto.getReps())
                 .videoUrl(dto.getVideoUrl())
-                .build();
-    }
-
-    /**
-     * Converts ExerciseEntity to Exercise domain model
-     */
-    public static Exercise toDomain(ExerciseEntity entity) {
-        if (entity == null) return null;
-
-        return Exercise.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .description(entity.getDescription())
-                .category(entity.getCategory())
-                .equipment(entity.getEquipment())
-                .duration(entity.getDuration())
-                .sets(entity.getSets())
-                .reps(entity.getReps())
-                .videoUrl(entity.getVideoUrl())
-                .build();
-    }
-
-    /**
-     * Converts Exercise domain model to ExerciseEntity
-     */
-    public static ExerciseEntity toEntity(Exercise domain) {
-        if (domain == null) return null;
-
-        return ExerciseEntity.builder()
-                .id(domain.getId())
-                .name(domain.getName())
-                .description(domain.getDescription())
-                .category(domain.getCategory())
-                .equipment(domain.getEquipment())
-                .duration(domain.getDuration())
-                .sets(domain.getSets())
-                .reps(domain.getReps())
-                .videoUrl(domain.getVideoUrl())
+                .createdBy(dto.getCreatedBy() != null 
+                    ? UserMapper.toEntity(dto.getCreatedBy()) // Convert UserDTO → UserEntity
+                    : null)
                 .build();
     }
 
@@ -98,25 +66,31 @@ public class ExerciseMapper {
                 .sets(domain.getSets())
                 .reps(domain.getReps())
                 .videoUrl(domain.getVideoUrl())
+                .createdBy(domain.getCreatedBy() != null 
+                    ? domain.getCreatedBy() // User is already the correct type
+                    : null)
                 .build();
     }
 
     /**
-     * Converts ExerciseDTO to Exercise domain model
+     * Converts ExerciseEntity to Exercise domain model
      */
-    public static Exercise toDomain(ExerciseDTO dto) {
-        if (dto == null) return null;
+    public static Exercise toDomain(ExerciseEntity entity) {
+        if (entity == null) return null;
 
         return Exercise.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .category(dto.getCategory())
-                .equipment(dto.getEquipment())
-                .duration(dto.getDuration())
-                .sets(dto.getSets())
-                .reps(dto.getReps())
-                .videoUrl(dto.getVideoUrl())
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .category(entity.getCategory())
+                .equipment(entity.getEquipment())
+                .duration(entity.getDuration())
+                .sets(entity.getSets())
+                .reps(entity.getReps())
+                .videoUrl(entity.getVideoUrl())
+                .createdBy(entity.getCreatedBy() != null 
+                    ? UserMapper.toDomain(entity.getCreatedBy()) // Convert UserEntity → User
+                    : null)
                 .build();
     }
 }

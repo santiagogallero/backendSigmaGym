@@ -36,6 +36,9 @@ public class ProgressEntity {
     private WorkoutPlanEntity workoutPlan;
     private LocalDate date;
     private String notes;
+    private Double weight;
+    private Double muscleMass;
+    private Double bodyFatPercentage;
     
     @OneToMany(mappedBy = "progress", cascade = CascadeType.ALL)
     private List<RoutineProgressEntity> routineProgressList;

@@ -18,6 +18,9 @@ public class RoutineMapper {
                 .difficulty(entity.getDifficulty())
                 .dayOfWeek(entity.getDayOfWeek())
                 .workoutPlanId(entity.getWorkoutPlan() != null ? entity.getWorkoutPlan().getId() : null)
+                .routineExercises(entity.getRoutineExercises() != null 
+                    ? RoutineExerciseMapper.toDtoList(entity.getRoutineExercises()) // Convert List<RoutineExerciseEntity> → List<RoutineExerciseDTO>
+                    : null)
                 .build();
     }
 
@@ -32,6 +35,9 @@ public class RoutineMapper {
                 .difficulty(dto.getDifficulty())
                 .dayOfWeek(dto.getDayOfWeek())
                 .workoutPlan(workoutPlan)
+                .routineExercises(dto.getRoutineExercises() != null 
+                    ? RoutineExerciseMapper.toEntityList(dto.getRoutineExercises()) // Convert List<RoutineExerciseDTO> → List<RoutineExerciseEntity>
+                    : null)
                 .build();
     }
 
@@ -46,6 +52,9 @@ public class RoutineMapper {
                 .difficulty(entity.getDifficulty())
                 .dayOfWeek(entity.getDayOfWeek())
                 .workoutPlanId(entity.getWorkoutPlan() != null ? entity.getWorkoutPlan().getId() : null)
+                .routineExercises(entity.getRoutineExercises() != null 
+                    ? RoutineExerciseMapper.toDomainList(entity.getRoutineExercises()) // Convert List<RoutineExerciseEntity> → List<RoutineExercise>
+                    : null)
                 .build();
     }
     public static RoutineEntity toEntity(Routine domain) {
@@ -59,6 +68,10 @@ public class RoutineMapper {
                 .difficulty(domain.getDifficulty())
                 .dayOfWeek(domain.getDayOfWeek())
                 .workoutPlan(null) // This should be set later when associating with a WorkoutPlan
+               .routineExercises(domain.getRoutineExercises() != null 
+                ? RoutineExerciseMapper.toEntityListFromModel(domain.getRoutineExercises())
+                : null)
+
                 .build();
     }
      // ✅ AGREGA ESTE MÉTODO que solo recibe DTO
@@ -73,6 +86,9 @@ public class RoutineMapper {
                 .difficulty(dto.getDifficulty())
                 .dayOfWeek(dto.getDayOfWeek())
                 .workoutPlan(null) // Se establecerá después en el contexto del WorkoutPlan
+                .routineExercises(dto.getRoutineExercises() != null 
+                    ? RoutineExerciseMapper.toEntityList(dto.getRoutineExercises()) // Convert List<RoutineExerciseDTO> → List<RoutineExerciseEntity>
+                    : null)
                 .build();
     }   
         // Add this method: Routine (domain) → RoutineDTO
@@ -85,7 +101,10 @@ public class RoutineMapper {
                     .duration(domain.getDuration())
                     .difficulty(domain.getDifficulty())
                     .dayOfWeek(domain.getDayOfWeek())
-                    // Map other fields as needed
+                    .workoutPlanId(domain.getWorkoutPlanId())
+                    .routineExercises(domain.getRoutineExercises() != null 
+                        ? RoutineExerciseMapper.toDtoListFromDomain(domain.getRoutineExercises()) // This will need a method that accepts List<RoutineExercise>
+                        : null)
                     .build();
         }
      
@@ -100,6 +119,10 @@ public class RoutineMapper {
                     .duration(dto.getDuration())
                     .difficulty(dto.getDifficulty())
                     .dayOfWeek(dto.getDayOfWeek())
+                    .workoutPlanId(dto.getWorkoutPlanId())
+                    .routineExercises(dto.getRoutineExercises() != null 
+                        ? RoutineExerciseMapper.toDomainListFromDto(dto.getRoutineExercises()) // Convert List<RoutineExerciseDTO> → List<RoutineExercise>
+                        : null)
                     // Map other fields as needed
                     .build();
         }

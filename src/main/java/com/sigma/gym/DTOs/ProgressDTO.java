@@ -13,8 +13,8 @@ public class ProgressDTO {
     private Long userId;
     private LocalDate date; // ✅ mejor usar LocalDate que String si podés
     private Double weight;
-    private Double bodyFatPercentage;
+    private Integer bodyFatPercentage;
     private Integer muscleMass;
     private String notes; // ✅ mejor usar String que Object para notas, así es más flexible
-    private Integer waterPercentage;
+    
 }

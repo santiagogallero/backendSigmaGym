@@ -15,9 +15,10 @@ public class ProgressMapper {
                 .id(entity.getId())
                 .userId(entity.getUser() != null ? entity.getUser().getId() : null)
                 .date(entity.getDate())
-                .weight(null)         // ⚠️ opcional: completar si los agregás a Entity
-                .muscleMass(null)
-                .fatPercentage(null)
+                .weight(entity.getWeight())         // ⚠️ opcional: completar si los agregás a Entity
+                .muscleMass(entity.getMuscleMass()) // ⚠️ opcional: completar si los agregás a Entity
+                .notes(entity.getNotes())
+                .bodyFatPercentage(entity.getBodyFatPercentage())
                 .build();
     }
 
@@ -28,6 +29,10 @@ public class ProgressMapper {
                 .id(domain.getId())
                 .date(domain.getDate())
                 .user(domain.getUserId() != null ? UserEntity.builder().id(domain.getUserId()).build() : null)
+                .weight(domain.getWeight())
+                .muscleMass(domain.getMuscleMass())
+                .bodyFatPercentage(domain.getBodyFatPercentage())
+                .notes(domain.getNotes())
                 .build();
     }
 
@@ -39,6 +44,9 @@ public class ProgressMapper {
                 .userId(entity.getUser() != null ? entity.getUser().getId() : null)
                 .date(entity.getDate())
                 .notes(entity.getNotes())
+                .weight(entity.getWeight())
+                .muscleMass(entity.getMuscleMass() != null ? entity.getMuscleMass().intValue() : null) // Convert Double to Integer if needed
+                .bodyFatPercentage(entity.getBodyFatPercentage() != null ? entity.getBodyFatPercentage().intValue() : null)
                 .build();
     }
 
@@ -50,6 +58,9 @@ public class ProgressMapper {
                 .date(dto.getDate())
                 .notes(dto.getNotes())
                 .user(dto.getUserId() != null ? UserEntity.builder().id(dto.getUserId()).build() : null)
+                .weight(dto.getWeight())
+                .muscleMass(dto.getMuscleMass() != null ? dto.getMuscleMass().doubleValue() : null) // Convert Integer to Double if needed
+                .bodyFatPercentage(dto.getBodyFatPercentage() != null ? dto.getBodyFatPercentage().doubleValue() : null)
                 .build();
     }
     public static ProgressDTO toDto(Progress domain) {
@@ -60,6 +71,9 @@ public class ProgressMapper {
                 .userId(domain.getUserId())
                 .date(domain.getDate())
                 .notes(domain.getNotes())
+                .weight(domain.getWeight())
+                .muscleMass(domain.getMuscleMass() != null ? domain.getMuscleMass().intValue() : null) // Convert Double to Integer if needed
+                .bodyFatPercentage(domain.getBodyFatPercentage() != null ? domain.getBodyFatPercentage().intValue() : null)
                 .build();
     }
 }

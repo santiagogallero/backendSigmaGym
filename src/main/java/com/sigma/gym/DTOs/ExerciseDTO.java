@@ -1,5 +1,7 @@
 package com.sigma.gym.DTOs;
 
+import com.sigma.gym.model.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +22,6 @@ public class ExerciseDTO {
     private Integer sets;        // sugerido base (opcional)
     private Integer reps;        // sugerido base (opcional)
     private String videoUrl;
+    private User createdBy; // Usuario que creó el ejercicio
 }
  

@@ -12,4 +12,7 @@ public class RoutineExercise {
     private Long exerciseId;
     private Integer sets;
     private Integer reps;
+    private Integer weight;
+    private Boolean isWarmup;
+    private String exerciseName; // útil para mostrar directo en el front
 }
