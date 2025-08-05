@@ -21,5 +21,6 @@ public class WorkOutLogDTO {
     private String workoutPlanName;
     private LocalDate date;
     private String notes;
-   private List<RoutineLogDTO> routineLogs;
+    private List<RoutineLogDTO> routineLogs;
+    private List<RoutineExerciseLogDTO> routineExerciseLogs; // alineado con model y entity
 }

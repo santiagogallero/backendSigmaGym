@@ -1,24 +1,14 @@
 package com.sigma.gym.entity;
-import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import java.util.ArrayList;
-
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-
 
 @Entity
 @Data
@@ -31,10 +21,12 @@ public class RoutineLogEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Relación con WorkoutLog
     @ManyToOne
     @JoinColumn(name = "workout_log_id", nullable = false)
     private WorkOutLogEntity workoutLog;
 
+    // Relación con la rutina
     @ManyToOne
     @JoinColumn(name = "routine_id", nullable = false)
     private RoutineEntity routine;
@@ -43,7 +35,21 @@ public class RoutineLogEntity {
     private LocalDateTime endTime;
     private String notes;
 
+    private Boolean completed; // ✅ estado de finalización
+
+    // Opcional: guardar duración en DB en vez de calcularla
+    private Long totalDuration; // en minutos o segundos
+
+    // Relación con logs de ejercicios
     @Builder.Default
-    @OneToMany(mappedBy = "routineLog", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routineLog", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoutineExerciseLogEntity> exerciseLogs = new ArrayList<>();
+
+    // Opcional: auditoría
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private UserEntity createdBy;
 }

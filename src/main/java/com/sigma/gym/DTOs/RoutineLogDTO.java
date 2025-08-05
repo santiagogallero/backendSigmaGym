@@ -1,6 +1,5 @@
 package com.sigma.gym.DTOs;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +21,6 @@ public class RoutineLogDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String notes;
+    private Boolean completed; // ✅ añadido para alinearse con entity/model
     private List<RoutineExerciseLogDTO> exerciseLogs;
 }

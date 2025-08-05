@@ -30,7 +30,7 @@ public class RegisterRequest {
     private String lastName;
 
     @NotNull
-    private Long roleId; // id del rol
+    private Long roleId;// nombre del rol
 
     @NotNull
     private String membershipType; // nombre del tipo de membresía elegido (ej: "3 veces por semana")

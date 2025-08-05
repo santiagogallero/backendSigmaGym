@@ -59,10 +59,11 @@ public class UserMapper {
             .lastName(dto.getLastName())
             .email(dto.getEmail())
             .roles(dto.getRoles() != null
-                ? dto.getRoles().stream()
-                    .map(RoleMapper::toEntity)
-                    .collect(Collectors.toList())
-                : null)
+            ? dto.getRoles().stream()
+                .map(RoleMapper::toEntity)
+                .collect(Collectors.toSet()) // ✅ ahora coincide con Set<RoleEntity>
+            : null)
+
             .startDate(dto.getStartDate())
             .lastVisitDate(dto.getLastVisitDate())
             .membershipType(dto.getMembershipType() != null
@@ -132,10 +133,11 @@ public class UserMapper {
             .lastName(domain.getLastName())
             .email(domain.getEmail())
             .roles(domain.getRoles() != null
-                ? domain.getRoles().stream()
-                    .map(RoleMapper::toEntity)
-                    .collect(Collectors.toList())
-                : null)
+    ? domain.getRoles().stream()
+        .map(RoleMapper::toEntity)
+        .collect(Collectors.toSet()) // ✅ ahora devuelve Set<RoleEntity>
+    : null)
+
             .startDate(domain.getStartDate())
             .lastVisitDate(domain.getLastVisitDate())
             .membershipType(domain.getMembershipType() != null

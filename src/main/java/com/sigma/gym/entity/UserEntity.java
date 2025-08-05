@@ -3,7 +3,10 @@ package com.sigma.gym.entity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,12 +35,14 @@ public class UserEntity implements UserDetails {
     private String password;
 
 @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
+@JoinTable(
     name = "user_roles",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id")
 )
-    private List<RoleEntity> roles;
+@Builder.Default
+private Set<RoleEntity> roles = new HashSet<>();
+
 
 
     private LocalDate startDate;
@@ -80,7 +85,6 @@ public class UserEntity implements UserDetails {
         setEmail(newUser.getEmail());
     }
 
-   
 @Override
 public Collection<? extends GrantedAuthority> getAuthorities() {
     return roles != null
@@ -89,6 +93,7 @@ public Collection<? extends GrantedAuthority> getAuthorities() {
                .toList()
         : new ArrayList<>();
 }
+
 
     // dentro de la clase User
 public boolean hasRole(String roleName) {

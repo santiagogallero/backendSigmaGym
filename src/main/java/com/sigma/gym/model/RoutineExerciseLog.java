@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 public class RoutineExerciseLog {
     private Long id;
-    private Long workoutLogId;
+   private Long routineLogId;
     private Long exerciseId;
     private Long routineExerciseId;
     private Integer repsPerformed;

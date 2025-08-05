@@ -17,8 +17,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,34 +48,35 @@ public class AuthenticationService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationResponse register(RegisterRequest request) throws Exception {
-        Optional<UserEntity> existingUser = userRepository.findByEmail(request.getEmail());
-        if (existingUser.isPresent()) {
-            throw new Exception("Email already in use");
-        }
+public AuthenticationResponse register(RegisterRequest request) {
+    RoleEntity role = roleRepository.findById(request.getRoleId())
+            .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + request.getRoleId()));
 
-        RoleEntity memberRole = roleRepository.findByName("MEMBER")
-                .orElseThrow(() -> new RuntimeException("Role MEMBER not found"));
+    UserEntity user = UserEntity.builder()
+            .username(request.getUsername())
+            .password(passwordEncoder.encode(request.getPassword()))
+            .email(request.getEmail())
+            .firstName(request.getFirstName())
+            .lastName(request.getLastName())
+            .roles(Set.of(role)) // asigna el rol buscado
+            .isActive(true)
+            .build();
 
-        UserEntity user = new UserEntity();
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRoles(List.of(memberRole)); // ✅ Cambiado a lista
+    userRepository.save(user);
 
-        userRepository.save(user);
+    String jwtToken = jwtService.generateToken(user);
 
-        String token = jwtService.generateToken(user);
+    return AuthenticationResponse.builder()
+            .accessToken(jwtToken)
+            .username(user.getUsername())
+            .email(user.getEmail())
+            .roles(Set.of(role.getName())) // para que el front reciba el nombre del rol
+            .firstName(user.getFirstName())
+            .lastName(user.getLastName())
+            .build();
+}
 
-        return AuthenticationResponse.builder()
-        .accessToken(token)
-        .email(user.getEmail())
-        .username(user.getUsername())
-        .roles(user.getRoles().stream().map(RoleEntity::getName).collect(Collectors.toSet()))
-        .firstName(user.getFirstName())
-        .lastName(user.getLastName())
-        .build();
-    }
+
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws Exception {
         try {
@@ -105,4 +105,9 @@ public class AuthenticationService {
             throw new AuthException("Invalid email or password");
         }
     }
+    public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
 }

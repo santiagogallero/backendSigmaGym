@@ -2,8 +2,8 @@ package com.sigma.gym.services.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,6 @@ import com.sigma.gym.repository.MembershipTypeRepository;
 import com.sigma.gym.repository.RoleRepository;
 import com.sigma.gym.repository.UserRepository;
 import com.sigma.gym.services.UserService;
-
 import jakarta.transaction.Transactional;
 
 @Service
@@ -61,7 +60,8 @@ public UserEntity createUser(RegisterRequest request) throws Exception {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .roles(List.of(role)) // corregido
+                .roles(Set.of(role)) // ✅ ahora coincide el tipo
+
                 .startDate(LocalDate.now())
                 .membershipType(membershipType)
                 .isActive(true)

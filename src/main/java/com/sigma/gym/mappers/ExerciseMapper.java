@@ -93,4 +93,23 @@ public class ExerciseMapper {
                     : null)
                 .build();
     }
+    public static ExerciseEntity toEntity(Exercise domain) {
+    if (domain == null) return null;
+
+    return ExerciseEntity.builder()
+            .id(domain.getId())
+            .name(domain.getName())
+            .description(domain.getDescription())
+            .category(domain.getCategory())
+            .equipment(domain.getEquipment())
+            .duration(domain.getDuration())
+            .sets(domain.getSets())
+            .reps(domain.getReps())
+            .videoUrl(domain.getVideoUrl())
+            .createdBy(domain.getCreatedBy() != null 
+                ? UserMapper.toEntity(domain.getCreatedBy())
+                : null)
+            .build();
+}
+
 }

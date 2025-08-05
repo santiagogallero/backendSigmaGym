@@ -30,19 +30,23 @@ public class SecurityConfig {
         return new JwtAuthenticationFilter(jwtService, userRepository);
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(daoAuthenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+   @Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+    return http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/auth/**").permitAll() // registro/login sin autenticación
+                    .requestMatchers("/api/admin/**").hasRole("OWNER") // solo OWNER
+                    .requestMatchers("/api/trainer/**").hasAnyRole("TRAINER", "OWNER") // trainer o owner
+                    .requestMatchers("/api/member/**").hasAnyRole("MEMBER", "TRAINER", "OWNER") // cualquier rol válido
+                    .anyRequest().authenticated() // todo lo demás requiere autenticación
+            )
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(daoAuthenticationProvider())
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
+}
+
     
 
     @Bean

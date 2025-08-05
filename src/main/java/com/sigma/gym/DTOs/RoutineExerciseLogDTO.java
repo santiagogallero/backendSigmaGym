@@ -14,15 +14,19 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class RoutineExerciseLogDTO {
 
-    private Long id;
-    private Long routineLogId;
-    private Long exerciseId;
-    private String exerciseName;
-    private Long routineExerciseId;
-    private Integer repsPerformed;
-    private Integer setsPerformed;
-    private BigDecimal weightUsed;
-    private Integer duration;
-    private String notes;
-    private Boolean completed;
+private Long id;
+private Long routineLogId;
+private Long exerciseId;
+private String exerciseName;
+private Long routineExerciseId;
+private Integer repsPerformed;
+private Integer setsPerformed;
+private double weightUsed;
+private Integer duration;
+private String notes;
+private Boolean completed;
+private Boolean isWarmup;
+private Integer setsCompleted;
+private Integer repsCompleted;
 }
+
