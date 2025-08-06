@@ -25,11 +25,11 @@ public class RoutineExerciseServiceImpl implements RoutineExerciseService {
 
     @Override
     public List<RoutineExercise> getExercisesByRoutine(Long routineId) {
-        return routineExerciseRepository.findByRoutineId(routineId)
-                .stream()
-                .map(RoutineExerciseMapper::toModel)
-                .collect(Collectors.toList());
-    }
+    return routineExerciseRepository.findByRoutine_Id(routineId) // ✅ cambio aquí
+            .stream()
+            .map(RoutineExerciseMapper::toModel)
+            .collect(Collectors.toList());
+}
 
 @Override
 

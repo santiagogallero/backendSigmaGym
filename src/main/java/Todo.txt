@@ -1,48 +1,66 @@
-# ✅ PROGRESO 26/07 - SIGMA GYM BACKEND
+✅ PROGRESO 05/08 - SIGMA GYM BACKEND
+Entidades revisadas y completadas:
+ User (con roles múltiples, membresía y lógica de expiración)
 
-## Entidades revisadas y completadas hoy:
-- [x] User (con roles múltiples, membresía y lógica de expiración)
-- [x] Role
-- [x] Attendance
-- [x] WorkoutPlan
-- [x] Routine
-- [x] Exercise
-- [x] RoutineExercise (Entidad + Mapper + DTO)
-- [x] RoutineLog (Entidad + Mapper + DTO)
+ Role
 
-## Servicios y lógica:
-- UserServiceImpl completo con:
-  - createUser con validaciones (email, username, rol, membresía)
-  - getUserByUsername, updateUser, getUserById
-  - Uso correcto de @Transactional y PasswordEncoder
-- AuthenticationService corregido para manejar múltiples roles
-- Ajuste de JWT para soportar lista de roles
+ Attendance
 
-## DTOs y Mappers:
-- AuthenticationRequest y AuthenticationResponse separados correctamente
-- RegisterRequest adaptado para usar roleId
-- UserDTO corregido
-- UserMapper corregido: toDto y toEntity funcionando
+ WorkoutPlan
 
-## Controllers:
-- UserController con endpoints:
-  - GET /users
-  - GET /users/data
-  - PUT /users/update
-  - GET /users/{id}
-- Uso correcto de UserMapper y ResponseData en controladores
+ Routine
 
-## Correcciones generales:
-- Se reemplazaron llamadas a `user.toDTO()` por `UserMapper.toDto(user)`
-- Imports corregidos (`ResponseData`, `UserDTO`, etc.)
-- Arreglo de errores de compilación (`builder()`, `getRoles()` mal referenciados)
+ Exercise
 
----
+ RoutineExercise (Entidad + Mapper + DTO)
 
-## 🔜 Pendientes sugeridos para seguir:
-- [ ] RoutineExerciseLog (Entidad + Mapper + DTO)
-- [ ] WorkoutLogMapper
-- [ ] WorkoutLogDto
-- [ ] ProgressMapper
-- [ ] Vincular entrenadores (`User`) a WorkoutPlan como `trainer` (`@ManyToOne`)
+ RoutineLog (Entidad + Mapper + DTO)
 
+ RoutineProgress (Entidad + Mapper + DTO + Service + Controller)
+
+ Appointment (Entidad + Mapper + DTO + Service + Controller)
+
+ Attendance (Entidad + Mapper + DTO + Service + Controller)
+
+ Todos los mappers, DTOs y controladores implementados y revisados
+
+Servicios y lógica:
+Servicios implementados con validaciones, transacciones y relaciones correctas
+
+JWT configurado para múltiples roles
+
+Mappers adaptados para relaciones y evitando problemas de columnas duplicadas
+
+Todas las relaciones @ManyToOne y @OneToMany revisadas y funcionales
+
+DTOs y Mappers:
+Todos los DTOs implementados
+
+Mappers funcionando en ambos sentidos (entity ↔ model ↔ dto)
+
+Ajustes en RoutineProgressMapper para evitar duplicidad de columnas y manejar correctamente ProgressEntity
+
+Controllers:
+Controladores CRUD para todas las entidades
+
+Uso correcto de ResponseData y mapeo de DTOs
+
+Endpoints revisados y listos para pruebas
+
+Correcciones generales:
+Imports corregidos
+
+Errores de compilación resueltos
+
+Relación progress_id corregida en RoutineProgressEntity
+
+Código consistente con arquitectura limpia
+
+🚀 Próximo paso:
+Probar todos los endpoints con una colección de Postman o Insomnia, usando variables globales para:
+
+Token JWT
+
+IDs de prueba (userId, routineId, progressId, etc.)
+
+Datos de prueba para POST/PUT

@@ -4,32 +4,33 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "attendance")
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-
-// Clase que representa la asistencia de un miembro al gimnasio.
+@AllArgsConstructor
 public class AttendanceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @Column(nullable = false)
+    private LocalDate date;
+
+    @Column(nullable = false)
+    private String status; // "CHECKED_IN", "CHECKED_OUT", "ABSENT"
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    private LocalDate date;
+    @Column(name = "check_in_time")
+    private LocalDateTime checkInTime;
 
-    private String status; // "Present", "Absent", "Late"
-
-    private String notes; // comentarios opcionales
-
-    private LocalTime checkInTime;
-
-    private LocalTime checkOutTime;
+    @Column(name = "check_out_time")
+    private LocalDateTime checkOutTime;
 }

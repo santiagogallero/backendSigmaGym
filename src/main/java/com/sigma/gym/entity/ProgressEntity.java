@@ -40,6 +40,8 @@ public class ProgressEntity {
     private Double muscleMass;
     private Double bodyFatPercentage;
     
-    @OneToMany(mappedBy = "progress", cascade = CascadeType.ALL)
+    
+    @OneToMany(mappedBy = "progress", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoutineProgressEntity> routineProgressList;
-}
+
+    }
