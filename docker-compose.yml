@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-sigmagym
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sigma_gym
+      MYSQL_USER: gymuser
+      MYSQL_PASSWORD: gympass
+    ports:
+     - "8081:8080"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-sigmagym
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/sigma_gym
+      - SPRING_DATASOURCE_USERNAME=gymuser
+      - SPRING_DATASOURCE_PASSWORD=gympass
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:

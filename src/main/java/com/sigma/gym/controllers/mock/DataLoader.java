@@ -5,7 +5,6 @@ import com.sigma.gym.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
@@ -14,11 +13,22 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (roleRepository.count() == 0) {
-            roleRepository.save(new RoleEntity(null, "OWNER", 1));
-            roleRepository.save(new RoleEntity(null, "TRAINER", 2));
-            roleRepository.save(new RoleEntity(null, "MEMBER", 3));
-            System.out.println("🚀 Roles cargados correctamente");
+        createRoleIfNotExists("OWNER", 1);
+        createRoleIfNotExists("TRAINER", 2);
+        createRoleIfNotExists("MEMBER", 3);
+        RoleEntity memberRole = roleRepository.findByName("MEMBER").get();
+        System.out.println("🔍 Role MEMBER obtenido desde base: ID = " + memberRole.getId());
+
+    }
+
+    private void createRoleIfNotExists(String name, int priority) {
+        if (roleRepository.findByName(name).isEmpty()) {
+            roleRepository.save(RoleEntity.builder()
+                    .name(name)
+                    .priority(priority)
+                    .build());
+            System.out.println("✅ Rol '" + name + "' creado");
         }
+        
     }
 }

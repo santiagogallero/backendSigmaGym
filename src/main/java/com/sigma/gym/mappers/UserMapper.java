@@ -50,38 +50,42 @@ public class UserMapper {
      * Converts UserDTO to UserEntity for persistence
      */
     public static UserEntity toEntity(UserDTO dto) {
-        if (dto == null) return null;
+    if (dto == null) return null;
 
-        return UserEntity.builder()
-            .id(dto.getId())
-            .username(dto.getUsername())
-            .firstName(dto.getFirstName())
-            .lastName(dto.getLastName())
-            .email(dto.getEmail())
-            .roles(dto.getRoles() != null
-            ? dto.getRoles().stream()
-                .map(RoleMapper::toEntity)
-                .collect(Collectors.toSet()) // ✅ ahora coincide con Set<RoleEntity>
-            : null)
-
-            .startDate(dto.getStartDate())
-            .lastVisitDate(dto.getLastVisitDate())
-            .membershipType(dto.getMembershipType() != null
-                ? MembershipTypeMapper.toEntityFromDto(dto.getMembershipType())
-                : null)
-            .isActive(dto.getIsActive())
-            .workoutPlans(dto.getWorkoutPlans() != null
-                ? dto.getWorkoutPlans().stream()
-                    .map(WorkoutPlanMapper::toEntity)
-                    .collect(Collectors.toList())
-                : null)
-            .progressHistory(dto.getProgressHistory() != null
-                ? dto.getProgressHistory().stream()
-                    .map(ProgressMapper::toEntity)
-                    .collect(Collectors.toList())
-                : null)
-            .build();
+    UserEntity entity = new UserEntity();
+    entity.setId(dto.getId());
+    entity.setUsername(dto.getUsername());
+    entity.setFirstName(dto.getFirstName());
+    entity.setLastName(dto.getLastName());
+    entity.setEmail(dto.getEmail());
+    entity.setRoles(dto.getRoles() != null
+        ? dto.getRoles().stream()
+            .map(RoleMapper::toEntity)
+            .collect(Collectors.toSet())
+        : null);
+    entity.setStartDate(dto.getStartDate());
+    entity.setLastVisitDate(dto.getLastVisitDate());
+    entity.setMembershipType(dto.getMembershipType() != null
+        ? MembershipTypeMapper.toEntityFromDto(dto.getMembershipType())
+        : null);
+    entity.setIsActive(dto.getIsActive());
+    // Solo asignar listas hijas si es un update (por ejemplo, si el DTO tiene id)
+    if (dto.getId() != null) {
+        if (dto.getWorkoutPlans() != null) {
+            entity.setWorkoutPlans(dto.getWorkoutPlans().stream()
+                .map(WorkoutPlanMapper::toEntity)
+                .collect(Collectors.toList()));
+        }
+        if (dto.getProgressHistory() != null) {
+            entity.setProgressHistory(dto.getProgressHistory().stream()
+                .map(ProgressMapper::toEntity)
+                .collect(Collectors.toList()));
+        }
+        // Agregar aquí el resto de listas hijas solo si es necesario para updates
     }
+    // Para registro, no se asignan listas hijas
+    return entity;
+}
 
     /**
      * Converts UserEntity to User domain model
@@ -123,39 +127,48 @@ public class UserMapper {
     /**
      * Converts User domain model to UserEntity
      */
-    public static UserEntity toEntity(User domain) {
-        if (domain == null) return null;
+public static UserEntity toEntity(User domain) {
+    if (domain == null) return null;
 
-        return UserEntity.builder()
-            .id(domain.getId())
-            .username(domain.getUsername())
-            .firstName(domain.getFirstName())
-            .lastName(domain.getLastName())
-            .email(domain.getEmail())
-            .roles(domain.getRoles() != null
-    ? domain.getRoles().stream()
-        .map(RoleMapper::toEntity)
-        .collect(Collectors.toSet()) // ✅ ahora devuelve Set<RoleEntity>
-    : null)
+    UserEntity entity = new UserEntity();
+    entity.setId(domain.getId());
+    entity.setUsername(domain.getUsername());
+    entity.setFirstName(domain.getFirstName());
+    entity.setLastName(domain.getLastName());
+    entity.setEmail(domain.getEmail());
 
-            .startDate(domain.getStartDate())
-            .lastVisitDate(domain.getLastVisitDate())
-            .membershipType(domain.getMembershipType() != null
-                ? MembershipTypeMapper.toEntity(domain.getMembershipType())
-                : null)
-            .isActive(domain.getIsActive())
-            .workoutPlans(domain.getWorkoutPlans() != null
-                ? domain.getWorkoutPlans().stream()
-                    .map(WorkoutPlanMapper::toEntity)
-                    .collect(Collectors.toList())
-                : null)
-            .progressHistory(domain.getProgressHistory() != null
-                ? domain.getProgressHistory().stream()
-                    .map(ProgressMapper::toEntity)
-                    .collect(Collectors.toList())
-                : null)
-            .build();
+    if (domain.getRoles() != null) {
+        entity.setRoles(domain.getRoles().stream()
+            .map(RoleMapper::toEntity)
+            .collect(Collectors.toSet()));
     }
+
+    entity.setStartDate(domain.getStartDate());
+    entity.setLastVisitDate(domain.getLastVisitDate());
+
+    if (domain.getMembershipType() != null) {
+        entity.setMembershipType(MembershipTypeMapper.toEntity(domain.getMembershipType()));
+    }
+
+    entity.setIsActive(domain.getIsActive());
+
+    // Solo mapear listas hijas si es un update (por ejemplo, si el dominio tiene id)
+    if (domain.getId() != null) {
+        if (domain.getWorkoutPlans() != null) {
+            entity.setWorkoutPlans(domain.getWorkoutPlans().stream()
+                .map(WorkoutPlanMapper::toEntity)
+                .collect(Collectors.toList()));
+        }
+        if (domain.getProgressHistory() != null) {
+            entity.setProgressHistory(domain.getProgressHistory().stream()
+                .map(ProgressMapper::toEntity)
+                .collect(Collectors.toList()));
+        }
+        // Agregar aquí el resto de listas hijas solo si es necesario para updates
+    }
+    // Para registro, no se asignan listas hijas
+    return entity;
+}
 
     /**
      * Converts User domain model to UserDTO

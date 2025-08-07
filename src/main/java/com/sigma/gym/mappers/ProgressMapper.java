@@ -21,20 +21,26 @@ public class ProgressMapper {
                 .bodyFatPercentage(entity.getBodyFatPercentage())
                 .build();
     }
+public static ProgressEntity toEntity(Progress domain) {
+    if (domain == null) return null;
 
-    public static ProgressEntity toEntity(Progress domain) {
-        if (domain == null) return null;
+    ProgressEntity entity = new ProgressEntity();
+    entity.setId(domain.getId());
+    entity.setDate(domain.getDate());
+    entity.setWeight(domain.getWeight());
+    entity.setMuscleMass(domain.getMuscleMass());
+    entity.setBodyFatPercentage(domain.getBodyFatPercentage());
+    entity.setNotes(domain.getNotes());
 
-        return ProgressEntity.builder()
-                .id(domain.getId())
-                .date(domain.getDate())
-                .user(domain.getUserId() != null ? UserEntity.builder().id(domain.getUserId()).build() : null)
-                .weight(domain.getWeight())
-                .muscleMass(domain.getMuscleMass())
-                .bodyFatPercentage(domain.getBodyFatPercentage())
-                .notes(domain.getNotes())
-                .build();
+    if (domain.getUserId() != null) {
+        UserEntity user = new UserEntity();
+        user.setId(domain.getUserId());
+        entity.setUser(user);
     }
+
+    return entity;
+}
+
 
     public static ProgressDTO toDto(ProgressEntity entity) {
         if (entity == null) return null;
@@ -50,19 +56,26 @@ public class ProgressMapper {
                 .build();
     }
 
-    public static ProgressEntity toEntity(ProgressDTO dto) {
-        if (dto == null) return null;
+public static ProgressEntity toEntity(ProgressDTO dto) {
+    if (dto == null) return null;
 
-        return ProgressEntity.builder()
-                .id(dto.getId())
-                .date(dto.getDate())
-                .notes(dto.getNotes())
-                .user(dto.getUserId() != null ? UserEntity.builder().id(dto.getUserId()).build() : null)
-                .weight(dto.getWeight())
-                .muscleMass(dto.getMuscleMass() != null ? dto.getMuscleMass().doubleValue() : null) // Convert Integer to Double if needed
-                .bodyFatPercentage(dto.getBodyFatPercentage() != null ? dto.getBodyFatPercentage().doubleValue() : null)
-                .build();
+    ProgressEntity entity = new ProgressEntity();
+    entity.setId(dto.getId());
+    entity.setDate(dto.getDate());
+    entity.setNotes(dto.getNotes());
+    entity.setWeight(dto.getWeight());
+    entity.setMuscleMass(dto.getMuscleMass() != null ? dto.getMuscleMass().doubleValue() : null);
+    entity.setBodyFatPercentage(dto.getBodyFatPercentage() != null ? dto.getBodyFatPercentage().doubleValue() : null);
+
+    if (dto.getUserId() != null) {
+        UserEntity user = new UserEntity();
+        user.setId(dto.getUserId());
+        entity.setUser(user);
     }
+
+    return entity;
+}
+
     public static ProgressDTO toDto(Progress domain) {
         if (domain == null) return null;
 

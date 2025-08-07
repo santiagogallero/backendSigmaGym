@@ -9,6 +9,7 @@ public class RoleMapper {
         return Role.builder()
                 .id(entity.getId())
                 .name(entity.getName())
+                .priority(entity.getPriority()) // ✅ agregado
                 .build();
     }
 
@@ -17,6 +18,7 @@ public class RoleMapper {
         return RoleEntity.builder()
                 .id(domain.getId())
                 .name(domain.getName())
+                .priority(domain.getPriority()) // ✅ agregado
                 .build();
     }
 
@@ -25,6 +27,7 @@ public class RoleMapper {
         return RoleDTO.builder()
                 .id(role.getId())
                 .name(role.getName())
+                .priority(role.getPriority()) // ✅ agregado
                 .build();
     }
 
@@ -33,23 +36,25 @@ public class RoleMapper {
         return Role.builder()
                 .id(dto.getId())
                 .name(dto.getName())
+                .priority(dto.getPriority()) // ✅ agregado
                 .build();
     }
+
     public static RoleEntity toEntity(RoleDTO dto) {
         if (dto == null) return null;
         return RoleEntity.builder()
                 .id(dto.getId())
                 .name(dto.getName())
-                // ...map other fields...
+                .priority(dto.getPriority())
                 .build();
     }
 
-    // 💡 Este es el que te faltaba
     public static RoleDTO toDto(RoleEntity entity) {
-       if(entity == null) return null;
-       return RoleDTO.builder()
-               .id(entity.getId())
-               .name(entity.getName())
-               .build();
+        if (entity == null) return null;
+        return RoleDTO.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .priority(entity.getPriority())
+                .build();
     }
 }

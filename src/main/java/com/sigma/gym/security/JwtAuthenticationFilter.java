@@ -34,15 +34,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
         // ✅ CRUCIAL: Saltar filtro para rutas públicas
-        String path = request.getRequestURI();
-        System.out.println("🔥 JwtAuthenticationFilter activo - request: " + request.getRequestURI());
+       String path = request.getServletPath();
+        System.out.println("🔥 JwtAuthenticationFilter activo - request: " + path);
 
-
-        System.out.println("➡️ Request a: " + path); 
         if (path.startsWith("/auth/")) {
+            System.out.println("🛑 Saltando filtro para ruta pública: " + path);
             filterChain.doFilter(request, response);
             return;
         }
+
          // 🔐 Validación del token
         String authHeader = request.getHeader("Authorization");
 

@@ -9,6 +9,7 @@ import com.sigma.gym.response.ResponseData;
 import com.sigma.gym.services.auth.AuthenticationService;
 
 import jakarta.security.auth.message.AuthException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -28,11 +29,11 @@ public class AuthController {
 
 
 
- @PostMapping("/register")
-    public ResponseEntity<ResponseData<?>> register(
-        @RequestBody RegisterRequest request) {
-        try {
-            AuthenticationResponse authResponse = authService.register(request);
+@PostMapping("/register")
+public ResponseEntity<ResponseData<?>> register(@Valid @RequestBody RegisterRequest request) {
+    System.out.println("➡️ Request a: /auth/register");
+    try {
+        AuthenticationResponse authResponse = authService.register(request);
             if(authResponse.getAccessToken() != null) 
                 return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(authResponse));
 
@@ -43,10 +44,14 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ResponseData.error(error.getMessage()));
         } catch (Exception error) {
-            System.out.printf("[AuthenticationController.register] -> %s", error.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ResponseData.error("No se pudo registrar el usuario"));
-        }
+    System.out.println("[AuthenticationController.register] ❌ EXCEPCIÓN DETECTADA:");
+    error.printStackTrace(); // Esto imprimirá TODO el stacktrace real
+
+    // Para que el mensaje en Postman sea más útil:
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(ResponseData.error("Error interno: " + error.getMessage()));
+}
+
     }
 
     @PostMapping("/authenticate")

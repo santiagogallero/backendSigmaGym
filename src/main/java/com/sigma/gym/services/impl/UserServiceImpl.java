@@ -48,27 +48,24 @@ public UserEntity createUser(RegisterRequest request) throws Exception {
             throw new UserException("El email " + request.getEmail() + " ya está registrado.");
         }
 
-        RoleEntity role = roleRepository.findById(request.getRoleId())
-                .orElseThrow(() -> new UserException("Rol no encontrado con ID: " + request.getRoleId()));
+        RoleEntity role = roleRepository.findByName("MEMBER")
+        .orElseThrow(() -> new UserException("No se encontró el rol por defecto: MEMBER"));
 
-        MembershipTypeEntity membershipType = membershipTypeRepository.findByName(request.getMembershipType())
-                .orElseThrow(() -> new RuntimeException("Tipo de membresía inválido"));
 
-        UserEntity user = UserEntity.builder()
-                .username(request.getUsername())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .roles(Set.of(role)) // ✅ ahora coincide el tipo
 
-                .startDate(LocalDate.now())
-                .membershipType(membershipType)
-                .isActive(true)
-                .workoutPlans(new ArrayList<>())
-                .progressHistory(new ArrayList<>())
-                .attendanceRecords(new ArrayList<>())
-                .build();
+
+        UserEntity user = new UserEntity();
+        user.setUsername(request.getUsername());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(Set.of(role));
+        user.setStartDate(LocalDate.now());
+
+        user.setIsActive(true);
+        // No inicializar listas hijas aquí
+
 
         return userRepository.save(user);
 

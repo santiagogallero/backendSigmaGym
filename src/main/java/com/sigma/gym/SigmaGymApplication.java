@@ -11,4 +11,5 @@ public class SigmaGymApplication {
     public static void main(String[] args) {
         SpringApplication.run(SigmaGymApplication.class, args);
     }
-}
+  
+}   

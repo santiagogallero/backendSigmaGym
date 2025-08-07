@@ -1,6 +1,5 @@
 package com.sigma.gym.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sigma.gym.model.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

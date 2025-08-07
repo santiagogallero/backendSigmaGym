@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 import lombok.*;
 @Entity
 @Data
-@Builder
+
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -40,7 +40,7 @@ public class UserEntity implements UserDetails {
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id")
 )
-@Builder.Default
+
 private Set<RoleEntity> roles = new HashSet<>();
 
 
@@ -67,6 +67,7 @@ private Set<RoleEntity> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<AttendanceEntity> attendanceRecords;
+
     @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
     private List<ExerciseEntity> createdExercises;
 
@@ -130,4 +131,4 @@ public boolean hasRole(String roleName) {
 }
 
 
-    
+
