@@ -13,6 +13,8 @@ import com.sigma.gym.repository.UserRepository;
 import com.sigma.gym.security.JwtService;
 
 import jakarta.security.auth.message.AuthException;
+
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -56,16 +58,14 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
     }
+
+@Transactional
 public AuthenticationResponse register(RegisterRequest request) {
     System.out.println("🟢 Entró al método register de AuthenticationService");
 
- RoleEntity role = roleRepository.findByName("MEMBER")
+    RoleEntity role = roleRepository.findByName("MEMBER")
         .orElseThrow(() -> new UserException("Rol MEMBER no existe en la base de datos"));
-
-System.out.println("✅ Rol obtenido: " + role.getName() + ", id: " + role.getId());
-
-    Set<RoleEntity> roles = new HashSet<>();
-    roles.add(role);
+    System.out.println("✅ Rol obtenido: " + role.getName() + ", id: " + role.getId());
 
     UserEntity user = new UserEntity();
     user.setUsername(request.getUsername());
@@ -73,11 +73,12 @@ System.out.println("✅ Rol obtenido: " + role.getName() + ", id: " + role.getId
     user.setEmail(request.getEmail());
     user.setFirstName(request.getFirstName());
     user.setLastName(request.getLastName());
-    user.setRoles(roles);
-
     user.setIsActive(true);
     user.setStartDate(LocalDate.now());
-    // Aseguramos que todas las listas hijas sean null para evitar persistencia en cascada
+
+    // ⚠️ Paso 1: guardar SIN roles para obtener ID
+    user.setRoles(new HashSet<>());       // ← vacío por ahora
+    // (mantener las colecciones @OneToMany en null como tenías)
     user.setRoutineProgressList(null);
     user.setWorkoutPlans(null);
     user.setWorkoutLogs(null);
@@ -85,44 +86,26 @@ System.out.println("✅ Rol obtenido: " + role.getName() + ", id: " + role.getId
     user.setAttendanceRecords(null);
     user.setCreatedExercises(null);
     user.setAssignedPlans(null);
-    // membershipType debe ser null al registrar, se puede asignar más tarde
     user.setMembershipType(null);
-// No inicializar listas de relaciones
-    System.out.println("🧠 DEBUG antes de guardar usuario:");
-    System.out.println(" - username: " + user.getUsername());
-    user.getRoles().forEach(r ->
-        System.out.println("   - rol: " + r.getName() + ", id: " + r.getId())
-    );
 
+    user = userRepository.save(user);     // ← ya tiene ID
 
-    // Log de todas las listas hijas antes de guardar
-    System.out.println("RoutineProgressList: " + user.getRoutineProgressList());
-    System.out.println("WorkoutPlans: " + user.getWorkoutPlans());
-    System.out.println("WorkoutLogs: " + user.getWorkoutLogs());
-    System.out.println("ProgressHistory: " + user.getProgressHistory());
-    System.out.println("AttendanceRecords: " + user.getAttendanceRecords());
-    System.out.println("CreatedExercises: " + user.getCreatedExercises());
-    System.out.println("AssignedPlans: " + user.getAssignedPlans());
+    // ✅ Paso 2: ahora sí, agregar el rol y persistir la tabla puente user_roles
+    user.getRoles().add(role);
+    user = userRepository.save(user);
 
-    System.out.println("🧠 Guardando usuario con roles:");
-    user.getRoles().forEach(r -> {
-        System.out.println("   - Role: " + r.getName() + ", id = " + r.getId());
-    });
-    userRepository.save(user);
-
-    // ⚠️ Asegurate de generar y devolver un token JWT válido
+    // Token
     String jwt = jwtService.generateToken(user);
 
     return AuthenticationResponse.builder()
-            .accessToken(jwt)
-            .username(user.getUsername())
-            .email(user.getEmail())
-            .firstName(user.getFirstName())
-            .lastName(user.getLastName())
-            .role(role.getName())
-            .build();
+        .accessToken(jwt)
+        .username(user.getUsername())
+        .email(user.getEmail())
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .role(role.getName())
+        .build();
 }
-
 
 
 

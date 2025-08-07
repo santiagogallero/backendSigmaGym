@@ -18,7 +18,7 @@ import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Table(name = "user")
 public class UserEntity implements UserDetails {
        @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -17,7 +17,7 @@ public class RegisterRequest {
     private String username;
 
     @NotNull
-    @Email
+
     private String email;
 
     @NotNull
@@ -30,5 +30,4 @@ public class RegisterRequest {
     private String lastName;
 
 
- // nombre del tipo de membresía elegido (ej: "3 veces por semana")
 }

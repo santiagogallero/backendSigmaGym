@@ -32,7 +32,7 @@ public class UserDTO {
     @NotNull
     private String email;
 
-    @NotNull
+    @JsonIgnore
    private List<RoleDTO> roles;
 
     @JsonIgnore
