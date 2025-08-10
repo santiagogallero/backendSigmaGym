@@ -9,6 +9,9 @@ import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;
 import org.springframework.stereotype.Service;
+
+import com.sigma.gym.entity.UserEntity;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,20 +23,35 @@ public class JwtService {
     @Value("${application.security.jwt.expiration}")
     private long jwtExpiration;
 
-    public String generateToken(UserDetails userDetails) {
-        try {
-            return Jwts
+// JwtService.java
+public String generateToken(UserEntity user) {
+    return Jwts.builder()
+        .subject(user.getEmail()) // ← EMAIL en el subject
+        .issuedAt(new Date(System.currentTimeMillis()))
+        .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
+        .signWith(getSecretKey())
+        .compact();
+}
+
+// Mantengo compatibilidad si te llaman con UserDetails
+public String generateToken(UserDetails userDetails) {
+    try {
+        // Forzamos a que el subject sea el email
+        String subject = (userDetails instanceof UserEntity)
+                ? ((UserEntity) userDetails).getEmail()
+                : userDetails.getUsername(); // fallback si no es UserEntity
+
+        return Jwts
                 .builder()
-                .subject(userDetails.getUsername())
+                .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration))
                 .signWith(getSecretKey())
                 .compact();
-        } catch (Exception error) {
-            throw new RuntimeException("[JwtService.generateToken] -> " + error.getMessage(), error);
-        }
+    } catch (Exception error) {
+        throw new RuntimeException("[JwtService.generateToken] -> " + error.getMessage(), error);
     }
-
+}
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
             final String username = extractClaim(token, Claims::getSubject);

@@ -3,7 +3,6 @@ package com.sigma.gym.services.auth;
 import com.sigma.gym.controllers.auth.dtos.AuthenticationRequest;
 import com.sigma.gym.controllers.auth.dtos.AuthenticationResponse;
 import com.sigma.gym.controllers.auth.dtos.RegisterRequest;
-import com.sigma.gym.entity.MembershipTypeEntity;
 import com.sigma.gym.entity.RoleEntity;
 import com.sigma.gym.entity.UserEntity;
 import com.sigma.gym.exceptions.UserException;
@@ -23,9 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,7 +58,7 @@ public class AuthenticationService {
 
 @Transactional
 public AuthenticationResponse register(RegisterRequest request) {
-    System.out.println("🟢 Entró al método register de AuthenticationService");
+
 
     RoleEntity role = roleRepository.findByName("MEMBER")
         .orElseThrow(() -> new UserException("Rol MEMBER no existe en la base de datos"));
