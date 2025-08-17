@@ -1,38 +1,52 @@
 package com.sigma.gym.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 @Entity
 @Data
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
 public class UserEntity implements UserDetails {
-       @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
-    private String username;
-    @Column
-    private String firstName;
-    @Column
-    private String lastName;
-    @Column(unique = true)
+    
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email must be valid")
+    @Column(unique = true, nullable = false)
     private String email;
+    
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     @Column(nullable = false)
     private String password;
+    
+    @NotBlank(message = "First name is required")
+    @Size(max = 50, message = "First name cannot exceed 50 characters")
+    @Column(nullable = false)
+    private String firstName;
+    
+    @NotBlank(message = "Last name is required")
+    @Size(max = 50, message = "Last name cannot exceed 50 characters")
+    @Column(nullable = false)
+    private String lastName;
 
 @ManyToMany(fetch = FetchType.EAGER)
 @JoinTable(
@@ -40,18 +54,26 @@ public class UserEntity implements UserDetails {
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id")
 )
-
 private Set<RoleEntity> roles = new HashSet<>();
+
+@Column(nullable = false)
+private Boolean isActive = true;
+
+@CreationTimestamp
+@Column(name = "created_at", nullable = false, updatable = false)
+private LocalDateTime createdAt;
+
+@Column(name = "last_login_at")
+private LocalDateTime lastLoginAt;
 
 
 
     private LocalDate startDate;
     private LocalDate lastVisitDate;
+    
     @ManyToOne
     @JoinColumn(name = "membership_type_id")
     private MembershipTypeEntity membershipType;
-    
-    private Boolean isActive;
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RoutineProgressEntity> routineProgressList;
@@ -86,20 +108,29 @@ private Set<RoleEntity> roles = new HashSet<>();
         setEmail(newUser.getEmail());
     }
 
+    // Method to update last login timestamp
+    public void updateLastLoginAt() {
+        this.lastLoginAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String getUsername() {
+        return email; // Use email as username for authentication
+    }
+
 @Override
 public Collection<? extends GrantedAuthority> getAuthorities() {
     return roles != null
         ? roles.stream()
-               .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+               .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName().name()))
                .toList()
         : new ArrayList<>();
 }
 
-
-    // dentro de la clase User
-public boolean hasRole(String roleName) {
+// dentro de la clase User
+public boolean hasRole(RoleEntity.RoleName roleName) {
     return roles != null && roles.stream()
-            .anyMatch(r -> r.getName().equalsIgnoreCase(roleName));
+            .anyMatch(r -> r.getName().equals(roleName));
 }
 
     @Override

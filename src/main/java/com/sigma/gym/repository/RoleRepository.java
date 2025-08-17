@@ -5,12 +5,17 @@ import org.springframework.stereotype.Repository;
 import com.sigma.gym.entity.RoleEntity;
 
 import java.util.Optional;
+
 @Repository
 public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
-    Optional<RoleEntity> findByName(String name);
-
-
     
-
+    /**
+     * Find role by name
+     */
+    Optional<RoleEntity> findByName(RoleEntity.RoleName name);
     
+    /**
+     * Check if role exists by name
+     */
+    boolean existsByName(RoleEntity.RoleName name);
 }

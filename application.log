@@ -1,0 +1,84 @@
+> Task :compileJava
+> Task :processResources UP-TO-DATE
+> Task :classes
+> Task :resolveMainClassName
+
+> Task :bootRun
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.4)
+
+2025-08-12T16:26:59.937-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] com.sigma.gym.SigmaGymApplication        : Starting SigmaGymApplication using Java 21.0.8 with PID 21652 (/Users/santiago/Proyectos/backend/build/classes/java/main started by santiago in /Users/santiago/Proyectos/backend)
+2025-08-12T16:26:59.938-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] com.sigma.gym.SigmaGymApplication        : No active profile set, falling back to 1 default profile: "default"
+2025-08-12T16:26:59.962-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-08-12T16:26:59.962-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-08-12T16:27:00.415-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-08-12T16:27:00.464-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 42 ms. Found 14 JPA repository interfaces.
+2025-08-12T16:27:00.760-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-08-12T16:27:00.768-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-08-12T16:27:00.768-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.43]
+2025-08-12T16:27:00.784-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-08-12T16:27:00.785-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 822 ms
+2025-08-12T16:27:00.844-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-08-12T16:27:00.884-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.22.Final
+2025-08-12T16:27:00.900-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-08-12T16:27:01.028-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-08-12T16:27:01.042-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-08-12T16:27:01.276-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1e6414dd
+2025-08-12T16:27:01.277-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-08-12T16:27:01.312-03:00  WARN 21652 --- [sigma-gym] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-08-12T16:27:01.312-03:00  WARN 21652 --- [sigma-gym] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-08-12T16:27:01.320-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-08-12T16:27:01.894-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: alter table appointments modify column status enum ('CANCELLED','COMPLETED','CONFIRMED','NO_SHOW','PENDING') not null
+2025-08-12T16:27:02.089-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+🛠️ JwtAuthenticationFilter inicializado correctamente
+2025-08-12T16:27:02.369-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name daoAuthenticationProvider
+2025-08-12T16:27:02.369-03:00  WARN 21652 --- [sigma-gym] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-08-12T16:27:02.399-03:00  WARN 21652 --- [sigma-gym] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-08-12T16:27:02.521-03:00  WARN 21652 --- [sigma-gym] [  restartedMain] thorizationManagerRequestMatcherRegistry : One of the patterns in [OPTIONS, /**] is missing a leading slash. This is discouraged; please include the leading slash in all your request matcher patterns. In future versions of Spring Security, leaving out the leading slash will result in an exception.
+2025-08-12T16:27:02.662-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-08-12T16:27:02.712-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-08-12T16:27:02.719-03:00  INFO 21652 --- [sigma-gym] [  restartedMain] com.sigma.gym.SigmaGymApplication        : Started SigmaGymApplication in 2.964 seconds (process running for 3.185)
+Hibernate: select re1_0.id,re1_0.name,re1_0.priority from role_entity re1_0 where re1_0.name=?
+Hibernate: select re1_0.id,re1_0.name,re1_0.priority from role_entity re1_0 where re1_0.name=?
+Hibernate: select re1_0.id,re1_0.name,re1_0.priority from role_entity re1_0 where re1_0.name=?
+Hibernate: select re1_0.id,re1_0.name,re1_0.priority from role_entity re1_0 where re1_0.name=?
+Hibernate: select re1_0.id,re1_0.name,re1_0.priority from role_entity re1_0 where re1_0.name=?
+Hibernate: select re1_0.id,re1_0.name,re1_0.priority from role_entity re1_0 where re1_0.name=?
+Hibernate: select ue1_0.id,ue1_0.email,ue1_0.first_name,ue1_0.is_active,ue1_0.last_name,ue1_0.last_visit_date,ue1_0.membership_type_id,ue1_0.password,ue1_0.start_date,ue1_0.username from user ue1_0 where ue1_0.email=?
+Hibernate: select r1_0.user_id,r1_1.id,r1_1.name,r1_1.priority from user_roles r1_0 join role_entity r1_1 on r1_1.id=r1_0.role_id where r1_0.user_id=?
+Hibernate: select ue1_0.id,ue1_0.email,ue1_0.first_name,ue1_0.is_active,ue1_0.last_name,ue1_0.last_visit_date,ue1_0.membership_type_id,ue1_0.password,ue1_0.start_date,ue1_0.username from user ue1_0 where ue1_0.email=?
+Hibernate: select r1_0.user_id,r1_1.id,r1_1.name,r1_1.priority from user_roles r1_0 join role_entity r1_1 on r1_1.id=r1_0.role_id where r1_0.user_id=?
+Hibernate: select ue1_0.id,ue1_0.email,ue1_0.first_name,ue1_0.is_active,ue1_0.last_name,ue1_0.last_visit_date,ue1_0.membership_type_id,ue1_0.password,ue1_0.start_date,ue1_0.username from user ue1_0 where ue1_0.email=?
+Hibernate: select r1_0.user_id,r1_1.id,r1_1.name,r1_1.priority from user_roles r1_0 join role_entity r1_1 on r1_1.id=r1_0.role_id where r1_0.user_id=?
+2025-08-12T16:27:15.105-03:00  INFO 21652 --- [sigma-gym] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-08-12T16:27:15.106-03:00  INFO 21652 --- [sigma-gym] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-08-12T16:27:15.109-03:00  INFO 21652 --- [sigma-gym] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+🔥 JwtAuthenticationFilter activo - request: /auth/register
+🛑 Saltando filtro para ruta pública: /auth/register
+➡️ Request a: /auth/register
+🟢 Entró al método register de AuthenticationService
+Hibernate: select ue1_0.id from user ue1_0 where ue1_0.email=? limit ?
+🔥 JwtAuthenticationFilter activo - request: /auth/register
+🛑 Saltando filtro para ruta pública: /auth/register
+➡️ Request a: /auth/register
+🟢 Entró al método register de AuthenticationService
+Hibernate: select ue1_0.id from user ue1_0 where ue1_0.email=? limit ?
+Hibernate: select re1_0.id,re1_0.name,re1_0.priority from role_entity re1_0 where re1_0.name=?
+✅ Rol obtenido: MEMBER, id: 3
+Hibernate: insert into user (email,first_name,is_active,last_name,last_visit_date,membership_type_id,password,start_date,username) values (?,?,?,?,?,?,?,?,?)
+Hibernate: insert into user_roles (user_id,role_id) values (?,?)

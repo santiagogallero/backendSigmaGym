@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,22 +41,15 @@ public class UserServiceImpl implements UserService {
  @Transactional
 public UserEntity createUser(RegisterRequest request) throws Exception {
     try {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            throw new UserException("El usuario " + request.getUsername() + " ya existe");
-        }
-
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new UserException("El email " + request.getEmail() + " ya está registrado.");
         }
 
-        RoleEntity role = roleRepository.findByName("MEMBER")
+        RoleEntity role = roleRepository.findByName(RoleEntity.RoleName.MEMBER)
         .orElseThrow(() -> new UserException("No se encontró el rol por defecto: MEMBER"));
 
-
-
-
         UserEntity user = new UserEntity();
-        user.setUsername(request.getUsername());
+        // Remove setUsername call
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
@@ -79,7 +73,7 @@ public UserEntity createUser(RegisterRequest request) throws Exception {
 
     public UserEntity getUserByUsername(String username) throws Exception {
         try {
-            return userRepository.findByUsername(username)
+            return userRepository.findByEmail(username) // Use email instead of username
                     .orElseThrow(() -> new UserException("Usuario no encontrado"));
         } catch (UserException e) {
             throw e;
@@ -110,5 +104,16 @@ public UserEntity createUser(RegisterRequest request) throws Exception {
         } catch (Exception e) {
             throw new Exception("[UserService.getUserById] -> " + e.getMessage());
         }
+    }
+
+    /**
+     * Genera un username único a partir del email
+     * Usa la parte local del email + UUID corto para garantizar unicidad
+     */
+    private String generateUsernameFromEmail(String email) {
+        String localPart = email.substring(0, email.indexOf('@'));
+        // Generar un sufijo único de 8 caracteres
+        String uniqueSuffix = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+        return localPart + "_" + uniqueSuffix;
     }
 }

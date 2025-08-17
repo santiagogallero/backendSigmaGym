@@ -1,9 +1,5 @@
 package com.sigma.gym.entity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,14 +11,34 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class RoleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // Ej: "OWNER", "TRAINER", "MEMBER"
+    @Enumerated(EnumType.STRING)
+    @Column(unique = true, nullable = false)
+    private RoleName name;
+
+    @Column(nullable = false)
+    private Integer priority; // 1 = más poder (OWNER), 2 = TRAINER, 3 = MEMBER
+
+    public enum RoleName {
+        OWNER(1),
+        TRAINER(2), 
+        MEMBER(3);
+
+        private final int defaultPriority;
+
+        RoleName(int defaultPriority) {
+            this.defaultPriority = defaultPriority;
+        }
+
+        public int getDefaultPriority() {
+            return defaultPriority;
+        }
+    }
 
     // ⚠️ Evitamos usar 'id' que podría ser null al momento de crear el Set
     @Override
@@ -30,16 +46,11 @@ public class RoleEntity {
         if (this == o) return true;
         if (!(o instanceof RoleEntity)) return false;
         RoleEntity that = (RoleEntity) o;
-        return name.equals(that.name); // Comparamos por nombre
+        return name != null && name.equals(that.name); // Comparamos por nombre
     }
-        @Override
+    
+    @Override
     public int hashCode() {
         return name != null ? name.hashCode() : 0;
     }
-
-    private int priority; // 1 = más poder (OWNER), 2 = TRAINER, 3 = MEMBER
-    // opcional: permisos si querés escalar
-    // @ElementCollection
-    // private List<String> permissions;
-
 }

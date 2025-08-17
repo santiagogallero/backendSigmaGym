@@ -1,6 +1,8 @@
 package com.sigma.gym.mappers;
 
 import com.sigma.gym.controllers.user.UserDTO;
+import com.sigma.gym.DTOs.auth.UserInfoDTO;
+import com.sigma.gym.entity.RoleEntity;
 import com.sigma.gym.entity.UserEntity;
 import com.sigma.gym.model.User;
 import java.util.stream.Collectors;
@@ -54,7 +56,7 @@ public class UserMapper {
 
     UserEntity entity = new UserEntity();
     entity.setId(dto.getId());
-    entity.setUsername(dto.getUsername());
+    // Remove setUsername as it no longer exists
     entity.setFirstName(dto.getFirstName());
     entity.setLastName(dto.getLastName());
     entity.setEmail(dto.getEmail());
@@ -132,7 +134,7 @@ public static UserEntity toEntity(User domain) {
 
     UserEntity entity = new UserEntity();
     entity.setId(domain.getId());
-    entity.setUsername(domain.getUsername());
+    // Remove setUsername as it no longer exists in entity
     entity.setFirstName(domain.getFirstName());
     entity.setLastName(domain.getLastName());
     entity.setEmail(domain.getEmail());
@@ -255,5 +257,29 @@ public static UserEntity toEntity(User domain) {
             .lastVisitDate(domain.getLastVisitDate())
             .isActive(domain.getIsActive())
             .build();
+    }
+
+    /**
+     * Converts UserEntity to UserInfoDTO for authentication responses
+     */
+    public static UserInfoDTO toUserInfoDTO(UserEntity user) {
+        if (user == null) {
+            return null;
+        }
+        
+        return UserInfoDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .roles(user.getRoles() != null 
+                        ? user.getRoles().stream()
+                                .map(RoleEntity::getName)
+                                .collect(Collectors.toSet())
+                        : null)
+                .isActive(user.getIsActive())
+                .createdAt(user.getCreatedAt())
+                .lastLoginAt(user.getLastLoginAt())
+                .build();
     }
 }

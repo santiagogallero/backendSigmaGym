@@ -8,8 +8,8 @@ public class RoleMapper {
         if (entity == null) return null;
         return Role.builder()
                 .id(entity.getId())
-                .name(entity.getName())
-                .priority(entity.getPriority()) // ✅ agregado
+                .name(entity.getName().name()) // Convert enum to string
+                .priority(entity.getPriority())
                 .build();
     }
 
@@ -17,8 +17,8 @@ public class RoleMapper {
         if (domain == null) return null;
         return RoleEntity.builder()
                 .id(domain.getId())
-                .name(domain.getName())
-                .priority(domain.getPriority()) // ✅ agregado
+                .name(RoleEntity.RoleName.valueOf(domain.getName())) // Convert string to enum
+                .priority(domain.getPriority())
                 .build();
     }
 
@@ -27,7 +27,7 @@ public class RoleMapper {
         return RoleDTO.builder()
                 .id(role.getId())
                 .name(role.getName())
-                .priority(role.getPriority()) // ✅ agregado
+                .priority(role.getPriority())
                 .build();
     }
 
@@ -36,7 +36,7 @@ public class RoleMapper {
         return Role.builder()
                 .id(dto.getId())
                 .name(dto.getName())
-                .priority(dto.getPriority()) // ✅ agregado
+                .priority(dto.getPriority())
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class RoleMapper {
         if (dto == null) return null;
         return RoleEntity.builder()
                 .id(dto.getId())
-                .name(dto.getName())
+                .name(RoleEntity.RoleName.valueOf(dto.getName())) // Convert string to enum
                 .priority(dto.getPriority())
                 .build();
     }
@@ -53,7 +53,7 @@ public class RoleMapper {
         if (entity == null) return null;
         return RoleDTO.builder()
                 .id(entity.getId())
-                .name(entity.getName())
+                .name(entity.getName().name()) // Convert enum to string
                 .priority(entity.getPriority())
                 .build();
     }

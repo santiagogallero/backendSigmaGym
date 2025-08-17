@@ -4,11 +4,13 @@ import com.sigma.gym.entity.AppointmentEntity;
 import com.sigma.gym.exceptions.ResourceNotFoundException;
 import com.sigma.gym.mappers.AppointmentMapper;
 import com.sigma.gym.model.Appointment;
+import com.sigma.gym.model.AppointmentStatus;
 import com.sigma.gym.repository.AppointmentRepository;
 import com.sigma.gym.services.AppointmentService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,5 +81,28 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .stream()
                 .map(AppointmentMapper::toModel)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Appointment> getByDateTimeRange(LocalDateTime from, LocalDateTime to) {
+        return repository.findByDateBetween(from, to).stream()
+                .map(AppointmentMapper::toModel)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public Appointment partialUpdate(Long id, LocalDateTime date, AppointmentStatus status) {
+        AppointmentEntity entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment not found with id: " + id));
+        
+        if (date != null) {
+            entity.setDate(date);
+        }
+        if (status != null) {
+            entity.setStatus(status);
+        }
+        
+        return AppointmentMapper.toModel(repository.save(entity));
     }
 }

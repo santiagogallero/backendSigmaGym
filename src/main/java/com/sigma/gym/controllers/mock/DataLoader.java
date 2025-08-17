@@ -24,21 +24,21 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // Roles
-        createRoleIfNotExists("OWNER", 1);
-        createRoleIfNotExists("TRAINER", 2);
-        createRoleIfNotExists("MEMBER", 3);
+        createRoleIfNotExists(RoleEntity.RoleName.OWNER, 1);
+        createRoleIfNotExists(RoleEntity.RoleName.TRAINER, 2);
+        createRoleIfNotExists(RoleEntity.RoleName.MEMBER, 3);
 
-        RoleEntity ownerRole = roleRepository.findByName("OWNER").orElseThrow();
-        RoleEntity trainerRole = roleRepository.findByName("TRAINER").orElseThrow();
-        RoleEntity memberRole = roleRepository.findByName("MEMBER").orElseThrow();
+        RoleEntity ownerRole = roleRepository.findByName(RoleEntity.RoleName.OWNER).orElseThrow();
+        RoleEntity trainerRole = roleRepository.findByName(RoleEntity.RoleName.TRAINER).orElseThrow();
+        RoleEntity memberRole = roleRepository.findByName(RoleEntity.RoleName.MEMBER).orElseThrow();
 
         // Usuarios de prueba
-        createUserIfNotExists("admin@sigma.com", "admin", "Admin", "Sigma", passwordEncoder.encode("1234"), Set.of(ownerRole, memberRole));
-        createUserIfNotExists("trainer@sigma.com", "trainer", "John", "Trainer", passwordEncoder.encode("1234"), Set.of(trainerRole, memberRole));
-        createUserIfNotExists("member@sigma.com", "member", "Jane", "Member", passwordEncoder.encode("1234"), Set.of(memberRole));
+        createUserIfNotExists("admin@sigma.com", "Admin", "Sigma", passwordEncoder.encode("123456"), Set.of(ownerRole, memberRole));
+        createUserIfNotExists("trainer@sigma.com", "John", "Trainer", passwordEncoder.encode("123456"), Set.of(trainerRole, memberRole));
+        createUserIfNotExists("member@sigma.com", "Jane", "Member", passwordEncoder.encode("123456"), Set.of(memberRole));
     }
 
-    private void createRoleIfNotExists(String name, int priority) {
+    private void createRoleIfNotExists(RoleEntity.RoleName name, int priority) {
         if (roleRepository.findByName(name).isEmpty()) {
             roleRepository.save(RoleEntity.builder()
                     .name(name)
@@ -48,11 +48,11 @@ public class DataLoader implements CommandLineRunner {
         }
     }
 
-    private void createUserIfNotExists(String email, String username, String firstName, String lastName, String password, Set<RoleEntity> roles) {
+    private void createUserIfNotExists(String email, String firstName, String lastName, String password, Set<RoleEntity> roles) {
         if (userRepository.findByEmail(email).isEmpty()) {
             UserEntity user = new UserEntity();
             user.setEmail(email);
-            user.setUsername(username);
+            // Remove setUsername call
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setPassword(password);
@@ -60,7 +60,7 @@ public class DataLoader implements CommandLineRunner {
             user.setIsActive(true);
             user.setStartDate(LocalDate.now());
             userRepository.save(user);
-            System.out.println("👤 Usuario '" + username + "' creado");
+            System.out.println("👤 Usuario '" + email + "' creado");
         }
     }
 }

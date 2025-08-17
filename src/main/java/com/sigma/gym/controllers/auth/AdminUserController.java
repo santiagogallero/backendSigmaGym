@@ -26,7 +26,7 @@ public class AdminUserController {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        RoleEntity owner = roleRepository.findByName("OWNER")
+        RoleEntity owner = roleRepository.findByName(RoleEntity.RoleName.OWNER)
                 .orElseThrow(() -> new RuntimeException("Role OWNER no existe"));
 
         if (user.getRoles() == null) user.setRoles(new HashSet<>());
