@@ -16,6 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 @Entity
@@ -43,10 +46,21 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private String firstName;
     
-    @NotBlank(message = "Last name is required")
-    @Size(max = 50, message = "Last name cannot exceed 50 characters")
-    @Column(nullable = false)
+        @Column(name = "last_name")
+    @NotBlank(message = "El apellido es obligatorio")
+    @Size(max = 50, message = "El apellido no puede exceder 50 caracteres")
     private String lastName;
+
+    @Column(name = "age")
+    @NotNull(message = "La edad es obligatoria")
+    @Min(value = 13, message = "La edad mínima es 13 años")
+    @Max(value = 100, message = "La edad máxima es 100 años")
+    private Integer age;
+
+    @Column(name = "health_condition")
+    @NotBlank(message = "La condición de salud es obligatoria")
+    @Size(max = 120, message = "La condición de salud no puede exceder 120 caracteres")
+    private String healthCondition;
 
 @ManyToMany(fetch = FetchType.EAGER)
 @JoinTable(

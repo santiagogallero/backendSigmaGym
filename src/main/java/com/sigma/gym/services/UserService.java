@@ -20,4 +20,5 @@ public interface UserService {
 
     public Optional<UserEntity> getUserById(Long userId)throws Exception;
     
+    public UserEntity findByEmail(String email) throws Exception;
 }

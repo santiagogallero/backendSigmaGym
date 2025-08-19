@@ -49,6 +49,8 @@ public class AuthController {
                     request.getPassword(),
                     request.getFirstName(),
                     request.getLastName(),
+                    request.getAge(),
+                    request.getHealthCondition(),
                     request.getRole()
             );
             return ResponseEntity.ok(ResponseData.success(response));

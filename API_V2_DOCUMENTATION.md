@@ -246,3 +246,42 @@ GET /api/v2/plan-exercises/next-order-index?dayId=1
 6. **View statistics** to analyze the plan
 
 This API provides complete flexibility for building complex workout plans with professional drag & drop functionality!
+
+---
+
+## 💰 Checkout Endpoints
+
+### Create Checkout Preference
+```http
+POST /api/checkout/create-preference
+Content-Type: application/json
+Authorization: Bearer <JWT_TOKEN>
+
+{
+  "planId": 1
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Preferencia de checkout creada exitosamente",
+  "data": {
+    "preferenceId": "123456789-abcd-1234-5678-123456789abc",
+    "initPoint": "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=123456789-abcd-1234-5678-123456789abc",
+    "sandboxInitPoint": "https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=123456789-abcd-1234-5678-123456789abc",
+    "externalReference": "MEMBERSHIP_1_123_20250818195809"
+  }
+}
+```
+
+**Features:**
+- JWT authentication required (MEMBER, TRAINER, or OWNER roles)
+- Creates Mercado Pago checkout preference
+- Returns exact contract expected by frontend
+- Validates plan availability and status
+- Generates unique external reference
+- Complete error handling
+
+For detailed documentation see: [CHECKOUT_API_DOCUMENTATION.md](CHECKOUT_API_DOCUMENTATION.md)

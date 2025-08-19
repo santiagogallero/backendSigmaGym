@@ -272,6 +272,7 @@ public static UserEntity toEntity(User domain) {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
+                .age(user.getAge())
                 .roles(user.getRoles() != null 
                         ? user.getRoles().stream()
                                 .map(RoleEntity::getName)

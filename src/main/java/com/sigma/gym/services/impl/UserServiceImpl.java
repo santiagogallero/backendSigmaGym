@@ -116,4 +116,10 @@ public UserEntity createUser(RegisterRequest request) throws Exception {
         String uniqueSuffix = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
         return localPart + "_" + uniqueSuffix;
     }
+    
+    @Override
+    public UserEntity findByEmail(String email) throws Exception {
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new UserException("No se encontró un usuario con el email: " + email));
+    }
 }

@@ -44,6 +44,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticat
                     .requestMatchers("/auth/**").permitAll() // registro/login sin autenticación
                     .requestMatchers("OPTIONS", "/**").permitAll() // permitir preflight OPTIONS
                     .requestMatchers("/api/plans", "/api/plans/**").permitAll() // public plans endpoints
+                    .requestMatchers("/api/webhook/**").permitAll() // webhooks sin autenticación
                     .requestMatchers("/admin/**").hasRole("OWNER") // solo OWNER
                     .requestMatchers("/api/admin/**").hasRole("OWNER") // solo OWNER
                     .requestMatchers("/api/trainer/**").hasAnyRole("TRAINER", "OWNER") // trainer o owner

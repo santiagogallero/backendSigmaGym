@@ -63,6 +63,8 @@ public class DataInitializationService implements CommandLineRunner {
             owner.setPassword(passwordEncoder.encode("owner123"));
             owner.setFirstName("Admin");
             owner.setLastName("Owner");
+            owner.setAge(35);
+            owner.setHealthCondition("Excelente estado físico");
             owner.setRoles(Set.of(ownerRole));
             owner.setIsActive(true);
 
@@ -81,6 +83,8 @@ public class DataInitializationService implements CommandLineRunner {
             trainer.setPassword(passwordEncoder.encode("trainer123"));
             trainer.setFirstName("John");
             trainer.setLastName("Trainer");
+            trainer.setAge(28);
+            trainer.setHealthCondition("Muy buen estado físico");
             trainer.setRoles(Set.of(trainerRole));
             trainer.setIsActive(true);
 
@@ -99,6 +103,8 @@ public class DataInitializationService implements CommandLineRunner {
             member.setPassword(passwordEncoder.encode("member123"));
             member.setFirstName("Jane");
             member.setLastName("Member");
+            member.setAge(24);
+            member.setHealthCondition("Buen estado físico general");
             member.setRoles(Set.of(memberRole));
             member.setIsActive(true);
 

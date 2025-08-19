@@ -54,7 +54,7 @@ public class AuthService {
     }
 
     @Transactional
-    public AuthResponseDTO register(String email, String password, String firstName, String lastName, RoleEntity.RoleName roleName) {
+    public AuthResponseDTO register(String email, String password, String firstName, String lastName, Integer age, String healthCondition, RoleEntity.RoleName roleName) {
         // Check if user already exists
         if (userRepository.existsByEmail(email)) {
             throw new RuntimeException("Email already registered");
@@ -64,12 +64,19 @@ public class AuthService {
         RoleEntity role = roleRepository.findByName(roleName)
                 .orElseThrow(() -> new RuntimeException("Role not found: " + roleName));
 
+        // Normalize healthCondition - if empty, set to "nada"
+        String normalizedHealthCondition = (healthCondition == null || healthCondition.trim().isEmpty()) 
+            ? "nada" 
+            : healthCondition.trim();
+
         // Create new user
         UserEntity user = new UserEntity();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         user.setFirstName(firstName);
         user.setLastName(lastName);
+        user.setAge(age);
+        user.setHealthCondition(normalizedHealthCondition);
         user.setRoles(Set.of(role));
         user.setIsActive(true);
 

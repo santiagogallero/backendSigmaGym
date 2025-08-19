@@ -18,6 +18,7 @@ public class UserInfoDTO {
     private String email;
     private String firstName;
     private String lastName;
+    private Integer age;
     private Set<RoleEntity.RoleName> roles;
     private Boolean isActive;
     private LocalDateTime createdAt;

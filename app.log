@@ -5243,3 +5243,28 @@ Hibernate: insert into user (created_at,email,first_name,is_active,last_login_at
 Hibernate: insert into user_roles (user_id,role_id) values (?,?)
 Hibernate: insert into user_roles (user_id,role_id) values (?,?)
 Hibernate: insert into user_roles (user_id,role_id) values (?,?)
+2025-08-17T02:49:16.315-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Retrograde clock change detected (housekeeper delta=29s851ms), soft-evicting connections from pool.
+2025-08-17T03:12:12.922-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m26s490ms).
+2025-08-17T04:17:56.486-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h5m13s544ms).
+2025-08-17T04:26:44.362-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=8m17s842ms).
+2025-08-17T04:41:58.784-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m14s421ms).
+2025-08-17T05:09:09.449-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=26m40s648ms).
+2025-08-17T05:27:27.227-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18m17s774ms).
+2025-08-17T05:46:29.362-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=18m32s106ms).
+2025-08-17T06:09:48.362-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=23m19s).
+2025-08-17T07:11:01.080-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h42s685ms).
+2025-08-17T07:27:23.957-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m22s878ms).
+2025-08-17T08:11:56.647-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=44m2s667ms).
+2025-08-17T09:13:09.237-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h42s571ms).
+2025-08-17T09:40:25.185-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=27m15s952ms).
+2025-08-17T09:50:40.823-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=9m45s617ms).
+2025-08-17T10:03:10.438-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m29s617ms).
+2025-08-17T10:14:00.071-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=10m19s635ms).
+2025-08-17T10:32:08.242-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=17m38s166ms).
+2025-08-17T11:14:57.240-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=42m48s997ms).
+2025-08-17T11:30:45.338-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m18s75ms).
+2025-08-17T11:31:32.588-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=47s251ms).
+2025-08-17T11:54:46.132-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=23m13s542ms).
+2025-08-17T11:57:30.155-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m14s13ms).
+2025-08-17T12:14:46.626-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m46s458ms).
+2025-08-17T12:23:57.928-03:00  WARN 76210 --- [sigma-gym] [l-1:housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m41s208ms).
