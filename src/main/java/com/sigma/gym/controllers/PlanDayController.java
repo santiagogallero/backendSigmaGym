@@ -39,7 +39,7 @@ public class PlanDayController {
         PlanDayDTO responseDTO = PlanDayMapper.toDTO(created);
         
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseData.success("Plan day created successfully", responseDTO));
+                .body(ResponseData.ok("Plan day created successfully", responseDTO));
     }
 
     /**
@@ -53,7 +53,7 @@ public class PlanDayController {
         List<PlanDayEntity> planDays = planDayService.getPlanDaysByPlanId(planId);
         List<PlanDayDTO> responseDTOs = PlanDayMapper.toDTOList(planDays);
         
-        return ResponseEntity.ok(ResponseData.success("Plan days retrieved successfully", responseDTOs));
+        return ResponseEntity.ok(ResponseData.ok("Plan days retrieved successfully", responseDTOs));
     }
 
     /**
@@ -73,7 +73,7 @@ public class PlanDayController {
         
         PlanDayDTO responseDTO = PlanDayMapper.toDTO(planDay.get());
         
-        return ResponseEntity.ok(ResponseData.success("Plan day retrieved successfully", responseDTO));
+        return ResponseEntity.ok(ResponseData.ok("Plan day retrieved successfully", responseDTO));
     }
 
     /**
@@ -89,7 +89,7 @@ public class PlanDayController {
             PlanDayEntity updated = planDayService.updatePlanDay(dayId, planDayDTO);
             PlanDayDTO responseDTO = PlanDayMapper.toDTO(updated);
             
-            return ResponseEntity.ok(ResponseData.success("Plan day updated successfully", responseDTO));
+            return ResponseEntity.ok(ResponseData.ok("Plan day updated successfully", responseDTO));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseData.error(e.getMessage()));
@@ -106,7 +106,7 @@ public class PlanDayController {
         
         try {
             planDayService.deletePlanDay(dayId);
-            return ResponseEntity.ok(ResponseData.success("Plan day deleted successfully", "OK"));
+            return ResponseEntity.ok(ResponseData.ok("Plan day deleted successfully", "OK"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseData.error(e.getMessage()));
@@ -125,7 +125,7 @@ public class PlanDayController {
         
         try {
             planDayService.reorderPlanDay(planId, fromIndex, toIndex);
-            return ResponseEntity.ok(ResponseData.success("Plan day reordered successfully", "OK"));
+            return ResponseEntity.ok(ResponseData.ok("Plan day reordered successfully", "OK"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseData.error(e.getMessage()));
@@ -147,7 +147,7 @@ public class PlanDayController {
             PlanDayDTO responseDTO = PlanDayMapper.toDTO(inserted);
             
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(ResponseData.success("Plan day inserted successfully", responseDTO));
+                    .body(ResponseData.ok("Plan day inserted successfully", responseDTO));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseData.error(e.getMessage()));
@@ -164,7 +164,7 @@ public class PlanDayController {
         
         int nextIndex = planDayService.getNextOrderIndex(planId);
         
-        return ResponseEntity.ok(ResponseData.success("Next order index retrieved successfully", nextIndex));
+        return ResponseEntity.ok(ResponseData.ok("Next order index retrieved successfully", nextIndex));
     }
 
     /**
@@ -177,6 +177,6 @@ public class PlanDayController {
         
         planDayService.validateAndFixOrder(planId);
         
-        return ResponseEntity.ok(ResponseData.success("Plan day order validated and fixed successfully", "OK"));
+        return ResponseEntity.ok(ResponseData.ok("Plan day order validated and fixed successfully", "OK"));
     }
 }

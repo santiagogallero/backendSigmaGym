@@ -129,7 +129,7 @@ public class MembershipController {
                 .map(this::convertToDTO)
                 .toList();
             
-            return ResponseEntity.ok(ResponseData.success("Planes de membresía obtenidos exitosamente", planDTOs));
+            return ResponseEntity.ok(ResponseData.ok("Planes de membresía obtenidos exitosamente", planDTOs));
                 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -162,7 +162,7 @@ public class MembershipController {
             
             CheckoutPreferenceDTO preference = mercadoPagoService.createCheckoutPreference(user, plan);
             
-            return ResponseEntity.ok(ResponseData.success("Preferencia de checkout creada exitosamente", preference));
+            return ResponseEntity.ok(ResponseData.ok("Preferencia de checkout creada exitosamente", preference));
                 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -182,7 +182,7 @@ public class MembershipController {
             
             membershipService.cancelUserMembership(user);
             
-            return ResponseEntity.ok(ResponseData.success("Membresía cancelada exitosamente", null));
+            return ResponseEntity.ok(ResponseData.ok("Membresía cancelada exitosamente", null));
                 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -201,7 +201,7 @@ public class MembershipController {
             plan.setActive(true);
             MembershipPlanEntity savedPlan = membershipPlanRepository.save(plan);
             
-            return ResponseEntity.ok(ResponseData.success("Plan de membresía creado exitosamente", convertToDTO(savedPlan)));
+            return ResponseEntity.ok(ResponseData.ok("Plan de membresía creado exitosamente", convertToDTO(savedPlan)));
                 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -215,7 +215,7 @@ public class MembershipController {
         try {
             long count = membershipService.getActiveMembershipsCount();
             
-            return ResponseEntity.ok(ResponseData.success("Cantidad de membresías activas obtenida exitosamente", count));
+            return ResponseEntity.ok(ResponseData.ok("Cantidad de membresías activas obtenida exitosamente", count));
                 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

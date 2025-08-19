@@ -27,7 +27,7 @@ public class PublicPlansController {
     public ResponseEntity<ResponseData<List<PlanDTO>>> getVisiblePlans() {
         try {
             List<PlanDTO> plans = planService.getVisiblePlans();
-            return ResponseEntity.ok(ResponseData.success(plans));
+            return ResponseEntity.ok(ResponseData.ok(plans));
         } catch (Exception e) {
             return ResponseEntity.status(500)
                     .body(ResponseData.error("Failed to retrieve plans"));
@@ -41,7 +41,7 @@ public class PublicPlansController {
     public ResponseEntity<ResponseData<PlansSettingsDTO>> getPublicSettings() {
         try {
             PlansSettingsDTO settings = plansSettingsService.getSettings();
-            return ResponseEntity.ok(ResponseData.success(settings));
+            return ResponseEntity.ok(ResponseData.ok(settings));
         } catch (Exception e) {
             return ResponseEntity.status(500)
                     .body(ResponseData.error("Failed to retrieve settings"));

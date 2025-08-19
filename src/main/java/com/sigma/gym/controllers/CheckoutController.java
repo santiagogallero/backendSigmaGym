@@ -62,7 +62,7 @@ public class CheckoutController {
             CheckoutPreferenceDTO preference = mercadoPagoService.createCheckoutPreference(user, plan);
             
             return ResponseEntity.ok(
-                ResponseData.success("Preferencia de checkout creada exitosamente", preference)
+                ResponseData.ok("Preferencia de checkout creada exitosamente", preference)
             );
                 
         } catch (IllegalArgumentException e) {

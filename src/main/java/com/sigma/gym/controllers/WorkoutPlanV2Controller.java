@@ -41,7 +41,7 @@ public class WorkoutPlanV2Controller {
         WorkoutPlanDTO responseDTO = WorkoutPlanEntityMapper.toDTO(created);
         
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseData.success("Workout plan created successfully", responseDTO));
+                .body(ResponseData.ok("Workout plan created successfully", responseDTO));
     }
 
     /**
@@ -62,7 +62,7 @@ public class WorkoutPlanV2Controller {
         
         WorkoutPlanDTO responseDTO = WorkoutPlanEntityMapper.toDTO(workoutPlan.get());
         
-        return ResponseEntity.ok(ResponseData.success("Workout plan retrieved successfully", responseDTO));
+        return ResponseEntity.ok(ResponseData.ok("Workout plan retrieved successfully", responseDTO));
     }
 
     /**
@@ -89,7 +89,7 @@ public class WorkoutPlanV2Controller {
         
         WorkoutPlanDTO responseDTO = WorkoutPlanEntityMapper.toDTO(workoutPlan.get());
         
-        return ResponseEntity.ok(ResponseData.success("Workout plan retrieved successfully", responseDTO));
+        return ResponseEntity.ok(ResponseData.ok("Workout plan retrieved successfully", responseDTO));
     }
 
     /**
@@ -114,7 +114,7 @@ public class WorkoutPlanV2Controller {
         
         List<WorkoutPlanDTO> responseDTOs = WorkoutPlanEntityMapper.toSummaryDTOList(workoutPlans);
         
-        return ResponseEntity.ok(ResponseData.success("Workout plans retrieved successfully", responseDTOs));
+        return ResponseEntity.ok(ResponseData.ok("Workout plans retrieved successfully", responseDTOs));
     }
 
     /**
@@ -142,7 +142,7 @@ public class WorkoutPlanV2Controller {
         WorkoutPlanEntity updated = workoutPlanService.updateWorkoutPlanEntity(existingPlan.get().getId(), workoutPlanDTO);
         WorkoutPlanDTO responseDTO = WorkoutPlanEntityMapper.toDTO(updated);
         
-        return ResponseEntity.ok(ResponseData.success("Workout plan updated successfully", responseDTO));
+        return ResponseEntity.ok(ResponseData.ok("Workout plan updated successfully", responseDTO));
     }
 
     /**
@@ -165,7 +165,7 @@ public class WorkoutPlanV2Controller {
         WorkoutPlanEntity updated = workoutPlanService.changeStatus(existingPlan.get().getId(), status);
         WorkoutPlanDTO responseDTO = WorkoutPlanEntityMapper.toDTO(updated);
         
-        return ResponseEntity.ok(ResponseData.success("Workout plan status changed successfully", responseDTO));
+        return ResponseEntity.ok(ResponseData.ok("Workout plan status changed successfully", responseDTO));
     }
 
     /**
@@ -186,7 +186,7 @@ public class WorkoutPlanV2Controller {
         
         WorkoutPlanStatsDTO stats = workoutPlanService.getWorkoutPlanStats(existingPlan.get().getId());
         
-        return ResponseEntity.ok(ResponseData.success("Workout plan statistics retrieved successfully", stats));
+        return ResponseEntity.ok(ResponseData.ok("Workout plan statistics retrieved successfully", stats));
     }
 
     /**
@@ -207,6 +207,6 @@ public class WorkoutPlanV2Controller {
         
         workoutPlanService.deleteWorkoutPlanEntity(existingPlan.get().getId());
         
-        return ResponseEntity.ok(ResponseData.success("Workout plan deleted successfully", "OK"));
+        return ResponseEntity.ok(ResponseData.ok("Workout plan deleted successfully", "OK"));
     }
 }

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
+// import org.springframework.web.reactive.function.client.WebClient; // TODO: Re-enable when dependency resolved
 
 import java.util.Map;
 import java.util.Optional;
@@ -19,7 +19,8 @@ public class WebhookService {
     
     private final PaymentLogRepository paymentLogRepository;
     private final MembershipService membershipService;
-    private final WebClient.Builder webClientBuilder;
+    // TODO: Re-enable when WebClient dependency is resolved
+    // private final WebClient.Builder webClientBuilder;
     
     @Async
     @Transactional

@@ -5,6 +5,7 @@ import com.sigma.gym.DTOs.auth.AuthResponseDTO;
 import com.sigma.gym.DTOs.auth.LoginRequestDTO;
 import com.sigma.gym.DTOs.auth.RegisterRequestDTO;
 import com.sigma.gym.DTOs.auth.UserInfoDTO;
+import com.sigma.gym.entity.RoleEntity;
 import com.sigma.gym.entity.UserEntity;
 import com.sigma.gym.response.ResponseData;
 import com.sigma.gym.services.AuthService;
@@ -31,7 +32,7 @@ public class AuthController {
     public ResponseEntity<ResponseData<AuthResponseDTO>> login(@Valid @RequestBody LoginRequestDTO request) {
         try {
             AuthResponseDTO response = authService.login(request.getEmail(), request.getPassword());
-            return ResponseEntity.ok(ResponseData.success(response));
+            return ResponseEntity.ok(ResponseData.ok(response));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(ResponseData.error("Invalid email or password"));
@@ -45,25 +46,17 @@ public class AuthController {
     public ResponseEntity<ResponseData<AuthResponseDTO>> register(@Valid @RequestBody RegisterRequestDTO request) {
         try {
             AuthResponseDTO response = authService.register(
-                    request.getEmail(),
-                    request.getPassword(),
-                    request.getFirstName(),
-                    request.getLastName(),
-                    request.getAge(),
-                    request.getHealthCondition(),
-                    request.getRole()
+                request.getEmail(), 
+                request.getPassword(), 
+                request.getFirstName(), 
+                request.getLastName(), 
+                request.getAge(), 
+                request.getHealthCondition(), 
+                RoleEntity.RoleName.MEMBER
             );
-            return ResponseEntity.ok(ResponseData.success(response));
+            return ResponseEntity.ok(ResponseData.ok(response));
         } catch (RuntimeException e) {
-            if (e.getMessage().contains("Email already registered")) {
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body(ResponseData.error("Email already registered"));
-            }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ResponseData.error(e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ResponseData.error("Registration failed"));
+            return ResponseEntity.badRequest().body(ResponseData.error("REGISTRATION_ERROR", e.getMessage()));
         }
     }
 
@@ -78,7 +71,7 @@ public class AuthController {
             if (authentication != null && authentication.getPrincipal() instanceof UserEntity) {
                 UserEntity user = (UserEntity) authentication.getPrincipal();
                 UserInfoDTO userInfo = authService.getCurrentUser(user.getEmail());
-                return ResponseEntity.ok(ResponseData.success(userInfo));
+                return ResponseEntity.ok(ResponseData.ok(userInfo));
             }
             
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -95,7 +88,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<ResponseData<String>> logout() {
         // Since JWT is stateless, logout is handled client-side by removing the token
-        return ResponseEntity.ok(ResponseData.success("Logout successful"));
+        return ResponseEntity.ok(ResponseData.ok("Logout successful"));
     }
 
     /**

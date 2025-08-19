@@ -32,7 +32,7 @@ public class AdminPlansController {
     public ResponseEntity<ResponseData<List<PlanDTO>>> getAllPlans() {
         try {
             List<PlanDTO> plans = planService.getAllPlans();
-            return ResponseEntity.ok(ResponseData.success(plans));
+            return ResponseEntity.ok(ResponseData.ok(plans));
         } catch (Exception e) {
             return ResponseEntity.status(500)
                     .body(ResponseData.error("Failed to retrieve plans"));
@@ -47,7 +47,7 @@ public class AdminPlansController {
     public ResponseEntity<ResponseData<PlanDTO>> getPlanById(@PathVariable Long id) {
         try {
             PlanDTO plan = planService.getPlanById(id);
-            return ResponseEntity.ok(ResponseData.success(plan));
+            return ResponseEntity.ok(ResponseData.ok(plan));
         } catch (Exception e) {
             return ResponseEntity.status(404)
                     .body(ResponseData.error("Plan not found"));
@@ -64,7 +64,7 @@ public class AdminPlansController {
         try {
             PlanDTO plan = planService.createPlan(request);
             return ResponseEntity.status(201)
-                    .body(ResponseData.success(plan));
+                    .body(ResponseData.ok(plan));
         } catch (Exception e) {
             return ResponseEntity.status(400)
                     .body(ResponseData.error("Failed to create plan: " + e.getMessage()));
@@ -81,7 +81,7 @@ public class AdminPlansController {
             @Valid @RequestBody UpdatePlanRequestDTO request) {
         try {
             PlanDTO plan = planService.updatePlan(id, request);
-            return ResponseEntity.ok(ResponseData.success(plan));
+            return ResponseEntity.ok(ResponseData.ok(plan));
         } catch (Exception e) {
             return ResponseEntity.status(400)
                     .body(ResponseData.error("Failed to update plan: " + e.getMessage()));
@@ -96,7 +96,7 @@ public class AdminPlansController {
     public ResponseEntity<ResponseData<String>> deletePlan(@PathVariable Long id) {
         try {
             planService.deletePlan(id);
-            return ResponseEntity.ok(ResponseData.success("Plan deleted successfully"));
+            return ResponseEntity.ok(ResponseData.ok("Plan deleted successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(400)
                     .body(ResponseData.error("Failed to delete plan: " + e.getMessage()));
@@ -111,7 +111,7 @@ public class AdminPlansController {
     public ResponseEntity<ResponseData<PlansSettingsDTO>> getAdminSettings() {
         try {
             PlansSettingsDTO settings = plansSettingsService.getSettings();
-            return ResponseEntity.ok(ResponseData.success(settings));
+            return ResponseEntity.ok(ResponseData.ok(settings));
         } catch (Exception e) {
             return ResponseEntity.status(500)
                     .body(ResponseData.error("Failed to retrieve settings"));
@@ -127,7 +127,7 @@ public class AdminPlansController {
             @Valid @RequestBody PlansSettingsDTO settingsDTO) {
         try {
             PlansSettingsDTO settings = plansSettingsService.updateSettings(settingsDTO);
-            return ResponseEntity.ok(ResponseData.success(settings));
+            return ResponseEntity.ok(ResponseData.ok(settings));
         } catch (Exception e) {
             return ResponseEntity.status(400)
                     .body(ResponseData.error("Failed to update settings: " + e.getMessage()));

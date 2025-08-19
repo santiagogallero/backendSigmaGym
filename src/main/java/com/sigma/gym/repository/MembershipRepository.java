@@ -41,4 +41,7 @@ public interface MembershipRepository extends JpaRepository<MembershipEntity, Lo
     
     @Query("SELECT m FROM MembershipEntity m WHERE m.status = 'FROZEN' AND m.freezeEnd <= :now")
     List<MembershipEntity> findFrozenMembershipsToUnfreeze(@Param("now") LocalDateTime now);
+
+    @Query("SELECT m FROM MembershipEntity m WHERE m.user.id = :userId AND m.status = 'ACTIVE'")
+    Optional<MembershipEntity> findActiveMembershipByUserId(@Param("userId") Long userId);
 }

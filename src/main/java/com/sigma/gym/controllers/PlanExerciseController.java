@@ -39,7 +39,7 @@ public class PlanExerciseController {
         PlanExerciseDTO responseDTO = PlanExerciseMapper.toDTO(created);
         
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseData.success("Plan exercise created successfully", responseDTO));
+                .body(ResponseData.ok("Plan exercise created successfully", responseDTO));
     }
 
     /**
@@ -63,7 +63,7 @@ public class PlanExerciseController {
         
         List<PlanExerciseDTO> responseDTOs = PlanExerciseMapper.toDTOList(exercises);
         
-        return ResponseEntity.ok(ResponseData.success("Plan exercises retrieved successfully", responseDTOs));
+        return ResponseEntity.ok(ResponseData.ok("Plan exercises retrieved successfully", responseDTOs));
     }
 
     /**
@@ -83,7 +83,7 @@ public class PlanExerciseController {
         
         PlanExerciseDTO responseDTO = PlanExerciseMapper.toDTO(exercise.get());
         
-        return ResponseEntity.ok(ResponseData.success("Plan exercise retrieved successfully", responseDTO));
+        return ResponseEntity.ok(ResponseData.ok("Plan exercise retrieved successfully", responseDTO));
     }
 
     /**
@@ -99,7 +99,7 @@ public class PlanExerciseController {
             PlanExerciseEntity updated = planExerciseService.updatePlanExercise(exerciseId, planExerciseDTO);
             PlanExerciseDTO responseDTO = PlanExerciseMapper.toDTO(updated);
             
-            return ResponseEntity.ok(ResponseData.success("Plan exercise updated successfully", responseDTO));
+            return ResponseEntity.ok(ResponseData.ok("Plan exercise updated successfully", responseDTO));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseData.error(e.getMessage()));
@@ -116,7 +116,7 @@ public class PlanExerciseController {
         
         try {
             planExerciseService.deletePlanExercise(exerciseId);
-            return ResponseEntity.ok(ResponseData.success("Plan exercise deleted successfully", "OK"));
+            return ResponseEntity.ok(ResponseData.ok("Plan exercise deleted successfully", "OK"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseData.error(e.getMessage()));
@@ -135,7 +135,7 @@ public class PlanExerciseController {
         
         try {
             planExerciseService.reorderPlanExercise(dayId, fromIndex, toIndex);
-            return ResponseEntity.ok(ResponseData.success("Plan exercise reordered successfully", "OK"));
+            return ResponseEntity.ok(ResponseData.ok("Plan exercise reordered successfully", "OK"));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseData.error(e.getMessage()));
@@ -157,7 +157,7 @@ public class PlanExerciseController {
             PlanExerciseDTO responseDTO = PlanExerciseMapper.toDTO(inserted);
             
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(ResponseData.success("Plan exercise inserted successfully", responseDTO));
+                    .body(ResponseData.ok("Plan exercise inserted successfully", responseDTO));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ResponseData.error(e.getMessage()));
@@ -176,7 +176,7 @@ public class PlanExerciseController {
         List<PlanExerciseEntity> exercises = planExerciseService.searchExercisesByName(dayId, name);
         List<PlanExerciseDTO> responseDTOs = PlanExerciseMapper.toDTOList(exercises);
         
-        return ResponseEntity.ok(ResponseData.success("Exercises found successfully", responseDTOs));
+        return ResponseEntity.ok(ResponseData.ok("Exercises found successfully", responseDTOs));
     }
 
     /**
@@ -189,7 +189,7 @@ public class PlanExerciseController {
         
         int nextIndex = planExerciseService.getNextOrderIndex(dayId);
         
-        return ResponseEntity.ok(ResponseData.success("Next order index retrieved successfully", nextIndex));
+        return ResponseEntity.ok(ResponseData.ok("Next order index retrieved successfully", nextIndex));
     }
 
     /**
@@ -202,6 +202,6 @@ public class PlanExerciseController {
         
         planExerciseService.validateAndFixOrder(dayId);
         
-        return ResponseEntity.ok(ResponseData.success("Plan exercise order validated and fixed successfully", "OK"));
+        return ResponseEntity.ok(ResponseData.ok("Plan exercise order validated and fixed successfully", "OK"));
     }
 }

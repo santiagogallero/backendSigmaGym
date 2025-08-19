@@ -1,28 +1,49 @@
 package com.sigma.gym.response;
 
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ResponseData<T> {
     private boolean success;
+    private String code;
     private String message;
     private T data;
 
-    public static <T> ResponseData<T> success(T data) {
-        return new ResponseData<>(true, "OK", data);
+    public static <T> ResponseData<T> ok(T data) {
+        return ResponseData.<T>builder()
+                .success(true)
+                .code("OK")
+                .data(data)
+                .build();
     }
 
-    public static <T> ResponseData<T> success(String message, T data) {
-        return new ResponseData<>(true, message, data);
+    public static <T> ResponseData<T> ok(String message, T data) {
+        return ResponseData.<T>builder()
+                .success(true)
+                .code("OK")
+                .message(message)
+                .data(data)
+                .build();
+    }
+
+    public static <T> ResponseData<T> error(String code, String message) {
+        return ResponseData.<T>builder()
+                .success(false)
+                .code(code)
+                .message(message)
+                .build();
     }
 
     public static <T> ResponseData<T> error(String message) {
-        return new ResponseData<>(false, message, null);
+        return ResponseData.<T>builder()
+                .success(false)
+                .code("ERROR")
+                .message(message)
+                .build();
     }
 }
 

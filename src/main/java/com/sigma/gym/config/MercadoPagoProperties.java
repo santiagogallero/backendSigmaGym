@@ -15,11 +15,17 @@ public class MercadoPagoProperties {
     private String webhookSecret;
     private String baseUrl;
     private String notificationUrl;
+    private String successUrl;
+    private String failureUrl;
+    private String pendingUrl;
     
     // Constructor por defecto
     public MercadoPagoProperties() {
         this.baseUrl = "http://localhost:8080";
         this.notificationUrl = this.baseUrl + "/api/webhook/mercadopago";
+        this.successUrl = this.baseUrl + "/payment/success";
+        this.failureUrl = this.baseUrl + "/payment/failure";
+        this.pendingUrl = this.baseUrl + "/payment/pending";
     }
     
     public String getNotificationUrl() {

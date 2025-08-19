@@ -1,0 +1,16 @@
+gym:
+  invoicing:
+    timezone: "America/Argentina/Buenos_Aires"
+    defaultInvoiceType: "RECEIPT" # prepare for A/B/C in future
+    tax:
+      enabled: true
+      rate: 21
+    numbering:
+      pos: "0001"
+      series: "A"
+    storage:
+      backend: "FS"   # FS or DB
+      basePath: "/var/app/invoices"
+    email:
+      from: "no-reply@sigmagym.app"
+      subjectTemplate: "Your receipt ${invoiceNumber}"

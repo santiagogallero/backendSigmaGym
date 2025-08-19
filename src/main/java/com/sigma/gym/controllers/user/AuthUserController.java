@@ -41,7 +41,7 @@ public class AuthUserController {
         try {
             UserEntity authUser = userService.getUserByUsername(userDetails.getUsername());
             UserDTO userDTO = UserMapper.toDto(authUser); // Asegurate de tener este método o usar un Mapper
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(userDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.ok(userDTO));
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
         } catch (Exception error) {
@@ -67,7 +67,7 @@ public class AuthUserController {
             UserEntity updatedUser = userService.updateUser(authUser);
           UserDTO updatedUserDTO = UserMapper.toDto(updatedUser);
 
-            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.success(updatedUserDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(ResponseData.ok(updatedUserDTO));
 
         } catch (UserException error) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResponseData.error(error.getMessage()));
