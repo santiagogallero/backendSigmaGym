@@ -40,27 +40,6 @@ public class AuthController {
     }
 
     /**
-     * User registration endpoint
-     */
-    @PostMapping("/register")
-    public ResponseEntity<ResponseData<AuthResponseDTO>> register(@Valid @RequestBody RegisterRequestDTO request) {
-        try {
-            AuthResponseDTO response = authService.register(
-                request.getEmail(), 
-                request.getPassword(), 
-                request.getFirstName(), 
-                request.getLastName(), 
-                request.getAge(), 
-                request.getHealthCondition(), 
-                RoleEntity.RoleName.MEMBER
-            );
-            return ResponseEntity.ok(ResponseData.ok(response));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(ResponseData.error("REGISTRATION_ERROR", e.getMessage()));
-        }
-    }
-
-    /**
      * Get current authenticated user info
      */
     @GetMapping("/me")

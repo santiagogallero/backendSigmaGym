@@ -71,9 +71,18 @@ public String generateToken(UserDetails userDetails) {
 
     public String extractUsername(String token) {
         try {
+            if (token == null || token.trim().isEmpty()) {
+                throw new IllegalArgumentException("JWT token cannot be null or empty");
+            }
+            
+            String[] tokenParts = token.split("\\.");
+            if (tokenParts.length != 3) {
+                throw new IllegalArgumentException("Invalid compact JWT string: Compact JWSs must contain exactly 2 period characters, and compact JWEs must contain exactly 4. Found: " + (tokenParts.length - 1));
+            }
+            
             return extractClaim(token, Claims::getSubject);
         } catch (Exception error) {
-            throw new RuntimeException("[JwtService.extractUsername] -> " + error.getMessage(), error);
+            throw new RuntimeException("[JwtService.extractUsername] -> [JwtService.extractClaim] -> " + error.getMessage(), error);
         }
     }
 

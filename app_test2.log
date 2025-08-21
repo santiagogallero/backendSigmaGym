@@ -1,0 +1,207 @@
+
+> Task :compileJava FAILED
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:10: error: not a statement
+            Authentication authentication) {com.sigma.gym.entity.UserEntity;
+                                                                ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:11: error: not a statement
+import com.sigma.gym.exceptions.WaitlistException;
+                               ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:12: error: not a statement
+import com.sigma.gym.repository.UserRepository;
+                               ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:13: error: not a statement
+import com.sigma.gym.services.WaitlistService;
+                             ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:14: error: not a statement
+import lombok.Getter;
+             ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:15: error: not a statement
+import lombok.RequiredArgsConstructor;
+             ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:16: error: not a statement
+import lombok.extern.slf4j.Slf4j;
+                          ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:17: error: not a statement
+import org.springframework.http.HttpStatus;
+                               ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:18: error: not a statement
+import org.springframework.http.ResponseEntity;
+                               ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:19: error: not a statement
+import org.springframework.security.access.prepost.PreAuthorize;
+                                                  ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:20: error: not a statement
+import org.springframework.security.core.Authentication;
+                                        ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:21: error: not a statement
+import org.springframework.web.bind.annotation.*;
+                                               ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:23: error: not a statement
+import jakarta.validation.Valid;
+                         ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:24: error: not a statement
+import java.util.List;
+                ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:8: error: implicitly declared classes are a preview feature and are disabled by default.
+    public ResponseEntity<Void> leaveWaitlist(
+           ^
+  (use --enable-preview to enable implicitly declared classes)
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:11: error: illegal start of expression
+import com.sigma.gym.exceptions.WaitlistException;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:12: error: illegal start of expression
+import com.sigma.gym.repository.UserRepository;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:13: error: illegal start of expression
+import com.sigma.gym.services.WaitlistService;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:14: error: illegal start of expression
+import lombok.Getter;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:15: error: illegal start of expression
+import lombok.RequiredArgsConstructor;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:16: error: illegal start of expression
+import lombok.extern.slf4j.Slf4j;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:17: error: illegal start of expression
+import org.springframework.http.HttpStatus;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:18: error: illegal start of expression
+import org.springframework.http.ResponseEntity;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:19: error: illegal start of expression
+import org.springframework.security.access.prepost.PreAuthorize;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:20: error: illegal start of expression
+import org.springframework.security.core.Authentication;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:21: error: illegal start of expression
+import org.springframework.web.bind.annotation.*;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:21: error: illegal start of expression
+import org.springframework.web.bind.annotation.*;
+                                                ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:23: error: illegal start of expression
+import jakarta.validation.Valid;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:24: error: illegal start of expression
+import java.util.List;
+^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:257: error: reached end of file while parsing
+}
+ ^
+/Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:1: error: implicitly declared class should not have package declaration
+package com.sigma.gym.controllers;
+^
+31 errors
+
+[Incubating] Problems report is available at: file:///Users/santiago/Proyectos/backend/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:8: error: implicitly declared classes are a preview feature and are disabled by default.
+      public ResponseEntity<Void> leaveWaitlist(
+             ^
+    (use --enable-preview to enable implicitly declared classes)
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:10: error: not a statement
+              Authentication authentication) {com.sigma.gym.entity.UserEntity;
+                                                                  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:11: error: not a statement
+  import com.sigma.gym.exceptions.WaitlistException;
+                                 ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:12: error: not a statement
+  import com.sigma.gym.repository.UserRepository;
+                                 ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:13: error: not a statement
+  import com.sigma.gym.services.WaitlistService;
+                               ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:14: error: not a statement
+  import lombok.Getter;
+               ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:15: error: not a statement
+  import lombok.RequiredArgsConstructor;
+               ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:16: error: not a statement
+  import lombok.extern.slf4j.Slf4j;
+                            ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:17: error: not a statement
+  import org.springframework.http.HttpStatus;
+                                 ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:18: error: not a statement
+  import org.springframework.http.ResponseEntity;
+                                 ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:19: error: not a statement
+  import org.springframework.security.access.prepost.PreAuthorize;
+                                                    ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:20: error: not a statement
+  import org.springframework.security.core.Authentication;
+                                          ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:21: error: not a statement
+  import org.springframework.web.bind.annotation.*;
+                                                 ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:23: error: not a statement
+  import jakarta.validation.Valid;
+                           ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:24: error: not a statement
+  import java.util.List;
+                  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:1: error: implicitly declared class should not have package declaration
+  package com.sigma.gym.controllers;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:257: error: reached end of file while parsing
+  }
+   ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:11: error: illegal start of expression
+  import com.sigma.gym.exceptions.WaitlistException;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:12: error: illegal start of expression
+  import com.sigma.gym.repository.UserRepository;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:13: error: illegal start of expression
+  import com.sigma.gym.services.WaitlistService;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:14: error: illegal start of expression
+  import lombok.Getter;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:15: error: illegal start of expression
+  import lombok.RequiredArgsConstructor;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:16: error: illegal start of expression
+  import lombok.extern.slf4j.Slf4j;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:17: error: illegal start of expression
+  import org.springframework.http.HttpStatus;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:18: error: illegal start of expression
+  import org.springframework.http.ResponseEntity;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:19: error: illegal start of expression
+  import org.springframework.security.access.prepost.PreAuthorize;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:20: error: illegal start of expression
+  import org.springframework.security.core.Authentication;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:21: error: illegal start of expression
+  import org.springframework.web.bind.annotation.*;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:21: error: illegal start of expression
+  import org.springframework.web.bind.annotation.*;
+                                                  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:23: error: illegal start of expression
+  import jakarta.validation.Valid;
+  ^
+  /Users/santiago/Proyectos/backend/src/main/java/com/sigma/gym/controllers/WaitlistController.java:24: error: illegal start of expression
+  import java.util.List;
+  ^
+  31 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights.
+
+BUILD FAILED in 12s
+1 actionable task: 1 executed

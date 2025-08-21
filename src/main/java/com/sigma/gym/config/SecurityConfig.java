@@ -12,14 +12,20 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 
 @Configuration
@@ -30,34 +36,51 @@ public class SecurityConfig {
     public SecurityConfig(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
+    
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
         return new JwtAuthenticationFilter(jwtService, userRepository);
     }
 
-   @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-    return http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/auth/**").permitAll() // registro/login sin autenticación
-                    .requestMatchers("OPTIONS", "/**").permitAll() // permitir preflight OPTIONS
-                    .requestMatchers("/api/plans", "/api/plans/**").permitAll() // public plans endpoints
-                    .requestMatchers("/api/webhook/**").permitAll() // webhooks sin autenticación
-                    .requestMatchers("/admin/**").hasRole("OWNER") // solo OWNER
-                    .requestMatchers("/api/admin/**").hasRole("OWNER") // solo OWNER
-                    .requestMatchers("/api/trainer/**").hasAnyRole("TRAINER", "OWNER") // trainer o owner
-                    .requestMatchers("/api/member/**").hasAnyRole("MEMBER", "TRAINER", "OWNER") // cualquier rol válido
-                    .anyRequest().authenticated() // todo lo demás requiere autenticación
-            )
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(daoAuthenticationProvider())
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
-}
+    @Bean
+    public AuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return new AuthenticationEntryPoint() {
+            @Override
+            public void commence(HttpServletRequest request, HttpServletResponse response,
+                               AuthenticationException authException) throws IOException, ServletException {
+                response.setContentType("application/json");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("{\"error\":\"unauthorized\"}");
+            }
+        };
+    }
 
-    
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        // Public routes
+                        .requestMatchers("OPTIONS", "/**").permitAll() // CORS preflight
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/static/**").permitAll()
+                        .requestMatchers("/api/plans", "/api/plans/**").permitAll() // public plans endpoints
+                        .requestMatchers("/api/webhook/**").permitAll() // webhooks sin autenticación
+                        // Protected routes
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint()))
+                .authenticationProvider(daoAuthenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
@@ -82,20 +105,19 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticat
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Permitir solo el origen específico del frontend
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        // Permitir orígenes de desarrollo frontend
+        configuration.setAllowedOrigins(Arrays.asList(
+            "http://localhost:5173", 
+            "http://localhost:3000"
+        ));
         
         // Permitir todos los métodos HTTP necesarios
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        
-        // Permitir todos los headers necesarios
-        configuration.setAllowedHeaders(Arrays.asList(
-            "Authorization", 
-            "Content-Type", 
-            "Accept", 
-            "X-Requested-With",
-            "Cache-Control"
+        configuration.setAllowedMethods(Arrays.asList(
+            "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
         ));
+        
+        // Permitir todos los headers
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         
         // Permitir cookies y credenciales (necesario para JWT en headers)
         configuration.setAllowCredentials(true);

@@ -1,6 +1,5 @@
 package com.sigma.gym.DTOs.auth;
 
-import com.sigma.gym.entity.RoleEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +36,5 @@ public class RegisterRequestDTO {
     @Size(max = 120, message = "Health condition cannot exceed 120 characters")
     private String healthCondition;
     
-    @NotNull(message = "Role is required")
-    private RoleEntity.RoleName role;
+    // Role is not included - always defaulted to MEMBER in the controller
 }

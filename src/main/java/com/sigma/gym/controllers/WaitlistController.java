@@ -27,13 +27,13 @@ public class WaitlistController {
     private final UserRepository userRepository;
 
     /**
-     * Join waitlist for a class session
+     * Join waitlist for a class
      */
     @PostMapping("/classes/{classSessionId}/join")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<JoinWaitlistResponseDTO> joinWaitlist(
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_TRAINER', 'ROLE_OWNER')")
+    public ResponseEntity<?> joinWaitlist(
             @PathVariable Long classSessionId,
-            @Valid @RequestBody(required = false) JoinWaitlistRequestDTO request,
+            @RequestBody(required = false) @Valid JoinWaitlistRequestDTO request,
             Authentication authentication) {
 
         Long userId = getCurrentUserId(authentication);
@@ -66,12 +66,12 @@ public class WaitlistController {
     /**
      * Leave waitlist
      */
-    @PostMapping("/entries/{entryId}/leave")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("/entries/{entryId}")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_TRAINER', 'ROLE_OWNER')")
     public ResponseEntity<Void> leaveWaitlist(
             @PathVariable Long entryId,
             Authentication authentication) {
-
+        
         Long userId = getCurrentUserId(authentication);
         log.info("User {} attempting to leave waitlist entry {}", userId, entryId);
 
@@ -89,14 +89,14 @@ public class WaitlistController {
     }
 
     /**
-     * Confirm promotion (accept spot from waitlist)
+     * Confirm waitlist promotion
      */
     @PostMapping("/entries/{entryId}/confirm")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_TRAINER', 'ROLE_OWNER')")
     public ResponseEntity<?> confirmPromotion(
             @PathVariable Long entryId,
             Authentication authentication) {
-
+        
         Long userId = getCurrentUserId(authentication);
         log.info("User {} attempting to confirm promotion for entry {}", userId, entryId);
 
@@ -105,12 +105,13 @@ public class WaitlistController {
             return ResponseEntity.ok(booking);
         } catch (WaitlistException e) {
             log.warn("Confirm promotion failed for user {} and entry {}: {}", userId, entryId, e.getMessage());
+            ErrorResponse errorResponse = new ErrorResponse(e.getMessage(), e.getErrorCode());
             HttpStatus status = getHttpStatusForErrorCode(e.getErrorCode());
-            return ResponseEntity.status(status).body(new ErrorResponse(e.getMessage(), e.getErrorCode()));
+            return ResponseEntity.status(status).body(errorResponse);
         } catch (Exception e) {
             log.error("Unexpected error confirming promotion for user {} and entry {}", userId, entryId, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse("An unexpected error occurred", "INTERNAL_ERROR"));
+            ErrorResponse errorResponse = new ErrorResponse("An unexpected error occurred", "INTERNAL_ERROR");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 
@@ -118,26 +119,50 @@ public class WaitlistController {
      * Get user's waitlist entries
      */
     @GetMapping("/me")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<List<WaitlistEntryDTO>> getMyWaitlistEntries(Authentication authentication) {
-        Long userId = getCurrentUserId(authentication);
-        log.debug("User {} requesting their waitlist entries", userId);
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_TRAINER', 'ROLE_OWNER')")
+    public ResponseEntity<?> getMyWaitlistEntries(Authentication authentication) {
+        // Check if user is authenticated
+        if (authentication == null || !authentication.isAuthenticated()) {
+            ErrorResponse errorResponse = new ErrorResponse("User not authenticated", "UNAUTHORIZED");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
 
-        List<WaitlistEntryDTO> entries = waitlistService.getUserWaitlistEntries(userId);
-        return ResponseEntity.ok(entries);
+        try {
+            Long userId = getCurrentUserId(authentication);
+            log.debug("User {} requesting their waitlist entries", userId);
+
+            List<WaitlistEntryDTO> entries = waitlistService.getUserWaitlistEntries(userId);
+            return ResponseEntity.ok(entries);
+        } catch (Exception e) {
+            log.error("Error retrieving waitlist entries for authenticated user", e);
+            ErrorResponse errorResponse = new ErrorResponse("Internal server error", "INTERNAL_ERROR");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     /**
      * Get user's active waitlist entries only
      */
     @GetMapping("/me/active")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<List<WaitlistEntryDTO>> getMyActiveWaitlistEntries(Authentication authentication) {
-        Long userId = getCurrentUserId(authentication);
-        log.debug("User {} requesting their active waitlist entries", userId);
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_TRAINER', 'ROLE_OWNER')")
+    public ResponseEntity<?> getMyActiveWaitlistEntries(Authentication authentication) {
+        // Check if user is authenticated
+        if (authentication == null || !authentication.isAuthenticated()) {
+            ErrorResponse errorResponse = new ErrorResponse("User not authenticated", "UNAUTHORIZED");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        }
 
-        List<WaitlistEntryDTO> entries = waitlistService.getUserActiveWaitlistEntries(userId);
-        return ResponseEntity.ok(entries);
+        try {
+            Long userId = getCurrentUserId(authentication);
+            log.debug("User {} requesting their active waitlist entries", userId);
+
+            List<WaitlistEntryDTO> entries = waitlistService.getUserActiveWaitlistEntries(userId);
+            return ResponseEntity.ok(entries);
+        } catch (Exception e) {
+            log.error("Error retrieving active waitlist entries for authenticated user", e);
+            ErrorResponse errorResponse = new ErrorResponse("Internal server error", "INTERNAL_ERROR");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
     }
 
     /**
@@ -160,7 +185,7 @@ public class WaitlistController {
      * Get waitlist status for a class (user view - includes their position)
      */
     @GetMapping("/classes/{classSessionId}/status")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_TRAINER', 'ROLE_OWNER')")
     public ResponseEntity<WaitlistStatusDTO> getClassWaitlistStatus(
             @PathVariable Long classSessionId,
             Authentication authentication) {
@@ -180,15 +205,15 @@ public class WaitlistController {
     public ResponseEntity<Void> promoteNext(
             @PathVariable Long classSessionId,
             Authentication authentication) {
-
-        Long adminId = getCurrentUserId(authentication);
-        log.info("Admin {} manually triggering promotion for class {}", adminId, classSessionId);
+        
+        Long adminUserId = getCurrentUserId(authentication);
+        log.info("Admin {} manually promoting next user for class {}", adminUserId, classSessionId);
 
         try {
             waitlistService.promoteNext(classSessionId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            log.error("Error in manual promotion for class {}", classSessionId, e);
+            log.error("Error promoting next user for class {}", classSessionId, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -199,9 +224,8 @@ public class WaitlistController {
     @PostMapping("/admin/process-expired-holds")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> processExpiredHolds(Authentication authentication) {
-
-        Long adminId = getCurrentUserId(authentication);
-        log.info("Admin {} manually triggering expired holds processing", adminId);
+        Long adminUserId = getCurrentUserId(authentication);
+        log.info("Admin {} manually processing expired holds", adminUserId);
 
         try {
             waitlistService.processExpiredHolds();
@@ -231,10 +255,8 @@ public class WaitlistController {
                 HttpStatus.NOT_FOUND;
             case "UNAUTHORIZED" -> 
                 HttpStatus.FORBIDDEN;
-            case "NO_ACTIVE_MEMBERSHIP" -> 
-                HttpStatus.PAYMENT_REQUIRED;
             default -> 
-                HttpStatus.BAD_REQUEST;
+                HttpStatus.INTERNAL_SERVER_ERROR;
         };
     }
 

@@ -113,6 +113,28 @@ public class InvoiceService {
         return mapToDTO(savedInvoice);
     }
 
+    /**
+     * Generate invoice only if it doesn't exist for the payment ID (idempotent operation)
+     * @param paymentId Unique payment identifier
+     * @param description Invoice description
+     * @param amount Payment amount
+     * @param currency Payment currency
+     * @return InvoiceDTO if created, null if already exists
+     */
+    @Transactional
+    public InvoiceDTO generateIfNotExists(Long paymentId, String description, BigDecimal amount, String currency) {
+        log.debug("Generating invoice if not exists for payment: {} with amount: {} {}", paymentId, amount, currency);
+
+        // Check if invoice already exists (idempotency guard)
+        if (invoiceRepository.existsByPaymentId(paymentId)) {
+            log.debug("Invoice already exists for payment {}, skipping generation", paymentId);
+            return null;
+        }
+
+        // Generate new invoice
+        return issueForPayment(paymentId, description, amount, currency);
+    }
+
     @Transactional(readOnly = true)
     public Optional<InvoiceDetailDTO> getInvoice(Long invoiceId, Long userId) {
         log.debug("Getting invoice: {} for user: {}", invoiceId, userId);

@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
@@ -18,10 +21,13 @@ import java.time.LocalDateTime;
            @Index(name = "idx_waitlist_hold_until", columnList = "hold_until"),
            @Index(name = "idx_waitlist_user_id", columnList = "user_id")
        })
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"classSession", "user"}) // Exclude to prevent circular references
+@EqualsAndHashCode(exclude = {"classSession", "user"}) // Exclude to prevent circular references
 public class WaitlistEntryEntity {
 
     @Id
