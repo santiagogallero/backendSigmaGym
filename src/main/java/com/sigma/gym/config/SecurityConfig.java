@@ -25,6 +25,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpMethod;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -61,9 +62,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        // Allow all OPTIONS requests (CORS preflight)
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Public routes
-                        .requestMatchers("OPTIONS", "/**").permitAll() // CORS preflight
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/docs/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
@@ -103,33 +106,37 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
+        CorsConfiguration config = new CorsConfiguration();
         
-        // Permitir orígenes de desarrollo frontend
-        configuration.setAllowedOrigins(Arrays.asList(
-            "http://localhost:5173", 
-            "http://localhost:3000"
+        // Permitir orígenes de desarrollo frontend según especificación
+        config.setAllowedOriginPatterns(Arrays.asList(
+            "http://localhost:5173",
+            "http://localhost:5174", 
+            "http://localhost:5175",
+            "http://localhost:5176"
         ));
         
-        // Permitir todos los métodos HTTP necesarios
-        configuration.setAllowedMethods(Arrays.asList(
-            "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
+        // Permitir todos los métodos HTTP requeridos
+        config.setAllowedMethods(Arrays.asList(
+            "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
         ));
         
-        // Permitir todos los headers
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        // Permitir headers específicos según especificación
+        config.setAllowedHeaders(Arrays.asList(
+            "Authorization", "Content-Type", "X-Requested-With"
+        ));
         
-        // Permitir cookies y credenciales (necesario para JWT en headers)
-        configuration.setAllowCredentials(true);
+        // Permitir credenciales (necesario para JWT en headers)
+        config.setAllowCredentials(true);
         
         // Exponer headers en las respuestas (útil para JWT y otros metadatos)
-        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
         
         // Tiempo de cache para preflight requests (en segundos)
-        configuration.setMaxAge(3600L);
+        config.setMaxAge(3600L);
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }

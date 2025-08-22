@@ -5,6 +5,18 @@
     "description": "A description for 'application.security.jwt.secret-key'"
   },
   {
+    "name": "application.security.jwt.expiration",
+    "type": "java.lang.Long",
+    "description": "JWT token expiration time in milliseconds",
+    "defaultValue": 86400000
+  },
+  {
+    "name": "sigmagym.seed.enabled",
+    "type": "java.lang.Boolean",
+    "description": "Enable or disable database seeding on startup",
+    "defaultValue": true
+  },
+  {
     "name": "app.mercadopago.access-token",
     "type": "java.lang.String",
     "description": "MercadoPago Access Token for API authentication"

@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/sigma_gym_prod}
+    username: ${DB_USER:sigma_user}
+    password: ${DB_PASS:secure_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate # En producción usar validate + migraciones
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: false
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  
+  sql:
+    init:
+      mode: never # No ejecutar scripts SQL automáticos
+
+# Database Seeding Configuration  
+sigmagym:
+  seed:
+    enabled: ${SEED_ENABLED:false} # Deshabilitado por defecto en producción
+
+# Logging optimizado para producción
+logging:
+  level:
+    com.sigma.gym: INFO
+    com.sigma.gym.security.JwtAuthenticationFilter: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    org.springframework.security: WARN
+    root: INFO
+  file:
+    name: /var/log/sigma-gym/application.log
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # Solo en tests se permite borrar
+    open-in-view: false
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.H2Dialect
+  
+  h2:
+    console:
+      enabled: false
+
+# Seeding deshabilitado en tests
+sigmagym:
+  seed:
+    enabled: false
+
+# Logging silencioso para tests
+logging:
+  level:
+    com.sigma.gym: WARN
+    org.hibernate: WARN
+    org.springframework: WARN
+    root: WARN

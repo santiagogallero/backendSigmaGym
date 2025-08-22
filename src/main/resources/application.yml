@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: sigma-gym
+  profiles:
+    active: dev
+
+# JWT Configuration (común a todos los perfiles)
+application:
+  security:
+    jwt:
+      secretKey: qLpCL+/tT63TFQvInL9L2bpeSVufYSPDUqPViyyjUZ3arLZae077RFo/TF4/QU9ZKvQZZbpRuuz6gdeoyAiHMQ==
+      expiration: 86400000
+
+# MercadoPago Configuration (común)
+app:
+  mercadopago:
+    access-token: ${MP_ACCESS_TOKEN:TEST-ACCESS-TOKEN}
+    public-key: ${MP_PUBLIC_KEY:TEST-PUBLIC-KEY}
+    webhook-secret: ${MP_WEBHOOK_SECRET:webhook-secret}
+    base-url: ${APP_BASE_URL:http://localhost:8080}
+
+# Invoicing Configuration (común)
+gym:
+  invoicing:
+    timezone: America/Argentina/Buenos_Aires
+    defaultInvoiceType: RECEIPT
+    tax:
+      enabled: true
+      rate: 21.0
+    numbering:
+      pos: "0001"
+      series: A
+    storage:
+      backend: FS
+      basePath: /var/app/invoices
+    email:
+      from: no-reply@sigmagym.app
+      subjectTemplate: "Your receipt ${invoiceNumber}"

@@ -1,19 +1,23 @@
 version: '3.8'
 
 services:
-  db:
+  mysql-dev:
     image: mysql:8.0
-    container_name: mysql-sigmagym
-    restart: always
+    container_name: sigma-gym-mysql-dev
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: sigma_gym
-      MYSQL_USER: gymuser
-      MYSQL_PASSWORD: gympass
+      MYSQL_DATABASE: sigma_gym_dev
+      MYSQL_USER: sigma_user
+      MYSQL_PASSWORD: sigma_pass
     ports:
-     - "8081:8080"
+      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - mysql_dev_data:/var/lib/mysql
+    command: >
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
 
   backend:
     build:
@@ -21,14 +25,15 @@ services:
       dockerfile: Dockerfile
     container_name: backend-sigmagym
     depends_on:
-      - db
+      - mysql-dev
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/sigma_gym
-      - SPRING_DATASOURCE_USERNAME=gymuser
-      - SPRING_DATASOURCE_PASSWORD=gympass
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-dev:3306/sigma_gym_dev?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Argentina/Buenos_Aires
+      - SPRING_DATASOURCE_USERNAME=sigma_user
+      - SPRING_DATASOURCE_PASSWORD=sigma_pass
     ports:
       - "8080:8080"
 
 volumes:
-  db_data:
+  mysql_dev_data:
+    driver: local

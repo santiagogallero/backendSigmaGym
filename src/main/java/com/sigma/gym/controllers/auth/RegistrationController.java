@@ -23,7 +23,6 @@ import java.util.Set;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173", maxAge = 3600, allowCredentials = "true")
 public class RegistrationController {
     
     private final RoleRepository roleRepository;
