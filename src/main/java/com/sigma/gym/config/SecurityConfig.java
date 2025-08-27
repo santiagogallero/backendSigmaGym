@@ -7,6 +7,7 @@ import com.sigma.gym.security.JwtService;
 import com.sigma.gym.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -33,6 +34,8 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    @Value("${sigmagym.features.waitlist.enabled:true}")
+    private boolean waitlistEnabled;
 
     public SecurityConfig(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -61,7 +64,8 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> auth
+        .authorizeHttpRequests(auth -> {
+                        var registry = auth
                         // Allow all OPTIONS requests (CORS preflight)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Public routes
@@ -73,11 +77,17 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/static/**").permitAll()
                         .requestMatchers("/api/plans", "/api/plans/**").permitAll() // public plans endpoints
-                        .requestMatchers("/api/webhook/**").permitAll() // webhooks sin autenticación
-                        // Protected routes
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers("/api/webhook/**").permitAll(); // webhooks sin autenticación
+
+                        if (!waitlistEnabled) {
+                            registry.requestMatchers("/api/waitlist/**").permitAll();
+                        }
+
+                        registry
+                            // Protected routes
+                            .requestMatchers("/api/**").authenticated()
+                            .anyRequest().authenticated();
+                })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint()))
                 .authenticationProvider(daoAuthenticationProvider())

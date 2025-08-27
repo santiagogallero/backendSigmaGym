@@ -31,8 +31,80 @@ public class BookingService {
     private final UserRepository userRepository;
     private final MembershipRepository membershipRepository;
     private final BookingProperties bookingProperties;
-    private final WaitlistService waitlistService;
+    private final Optional<WaitlistService> waitlistService;
 
+    /**
+     * Create a booking for a class session
+     */
+    @Transactional
+    public BookingActionResponseDTO createBooking(Long classSessionId, Long userId, String notes) {
+        try {
+            log.info("User {} attempting to book class {}", userId, classSessionId);
+
+            // Get user
+            UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + userId));
+
+            // Validate membership
+            validateMembershipForSession(user, classSessionRepository.findById(classSessionId)
+                .orElseThrow(() -> new ClassSessionNotFoundException(classSessionId)));
+
+            // Lock class session for capacity update
+            ClassSessionEntity classSession = classSessionRepository.findByIdForUpdate(classSessionId)
+                .orElseThrow(() -> new ClassSessionNotFoundException(classSessionId));
+
+            // Class must be active and upcoming
+            if (Boolean.FALSE.equals(classSession.getIsActive())) {
+                return BookingActionResponseDTO.error("Class session is not active", "CLASS_INACTIVE");
+            }
+            if (LocalDateTime.now().isAfter(classSession.getStartsAt())) {
+                return BookingActionResponseDTO.error("Class already started or finished", "CLASS_IN_PAST");
+            }
+
+            // Already booked check
+            boolean alreadyBooked = bookingRepository.existsByUserIdAndClassSessionIdAndStatus(
+                userId, classSessionId, BookingStatus.CONFIRMED);
+            if (alreadyBooked) {
+                return BookingActionResponseDTO.error("You already have a booking for this class", "ALREADY_BOOKED");
+            }
+
+            // Capacity check
+            if (classSession.isFull()) {
+                return BookingActionResponseDTO.classFull(
+                    "Class is full", null, classSession.getAvailableSpots(), classSession.getCapacity());
+            }
+
+            // Create booking
+            BookingEntity booking = BookingEntity.builder()
+                .user(user)
+                .classSession(classSession)
+                .status(BookingStatus.CONFIRMED)
+                .notes(notes)
+                .createdAt(LocalDateTime.now())
+                .build();
+            booking = bookingRepository.save(booking);
+
+            // Update capacity
+            classSession.incrementBookedCount();
+            classSessionRepository.save(classSession);
+
+            // Audit
+            createAuditRecord(booking, user, user, BookingAuditEntity.BookingAction.CREATED, "User booking", null);
+
+            log.info("Booking {} created for user {} and class {}", booking.getId(), userId, classSessionId);
+            return BookingActionResponseDTO.success("Booking created successfully", BookingDTO.fromEntity(booking));
+
+        } catch (UserNotFoundException | ClassSessionNotFoundException e) {
+            log.warn("Validation error creating booking: {}", e.getMessage());
+            return BookingActionResponseDTO.error(e.getMessage(), "NOT_FOUND");
+        } catch (BookingPolicyViolationException e) {
+            log.warn("Policy violation creating booking: {}", e.getMessage());
+            return BookingActionResponseDTO.error(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            log.error("Error creating booking for class {} and user {}", classSessionId, userId, e);
+            return BookingActionResponseDTO.error("Failed to create booking", "INTERNAL_ERROR");
+        }
+    }
     /**
      * Cancel a booking with policy validation and audit logging
      */
@@ -71,8 +143,8 @@ public class BookingService {
             // Create audit record
             createAuditRecord(finalBooking, user, user, BookingAuditEntity.BookingAction.CANCELLED, reason, null);
             
-            // Try to promote next waitlist user
-            waitlistService.promoteNext(finalBooking.getClassSessionId());
+            // Try to promote next waitlist user (if feature enabled)
+            waitlistService.ifPresent(svc -> svc.promoteNext(finalBooking.getClassSessionId()));
             
             log.info("Successfully cancelled booking {} for user {}", bookingId, userId);
             
@@ -158,8 +230,8 @@ public class BookingService {
                 "Rescheduled from booking " + finalOriginalBooking.getId(), 
                 String.format("{\"originalBookingId\":%d}", finalOriginalBooking.getId()));
                 
-            // Try to promote waitlist user for the original session
-            waitlistService.promoteNext(finalOriginalBooking.getClassSessionId());
+            // Try to promote waitlist user for the original session (if feature enabled)
+            waitlistService.ifPresent(svc -> svc.promoteNext(finalOriginalBooking.getClassSessionId()));
             
             log.info("Successfully rescheduled booking {} to new booking {} for user {}", 
                 bookingId, newBooking.getId(), userId);

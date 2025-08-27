@@ -35,5 +35,11 @@
     "name": "app.mercadopago.base-url",
     "type": "java.lang.String",
     "description": "Base URL for webhook notifications"
+  },
+  {
+    "name": "sigmagym.features.waitlist.enabled",
+    "type": "java.lang.Boolean",
+    "description": "Enable or disable the waitlist feature",
+    "defaultValue": true
   }
 ]}

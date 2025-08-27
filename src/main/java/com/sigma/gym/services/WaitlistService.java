@@ -10,6 +10,7 @@ import com.sigma.gym.exceptions.UserNotFoundException;
 import com.sigma.gym.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@ConditionalOnProperty(prefix = "sigmagym.features.waitlist", name = "enabled", havingValue = "true", matchIfMissing = true)
 @RequiredArgsConstructor
 public class WaitlistService {
 

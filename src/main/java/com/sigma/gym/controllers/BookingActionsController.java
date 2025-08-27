@@ -23,12 +23,33 @@ public class BookingActionsController {
 
     private final BookingService bookingService;
     private final UserRepository userRepository;
+    /**
+     * Create a booking (reserve a class)
+     */
+    @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_TRAINER', 'ROLE_OWNER')")
+    public ResponseEntity<BookingActionResponseDTO> createBooking(
+            @Valid @RequestBody CreateBookingRequestDTO request,
+            Authentication authentication) {
+
+        Long userId = getCurrentUserId(authentication);
+        log.info("User {} attempting to create booking for class {}", userId, request.getClassSessionId());
+
+        BookingActionResponseDTO response = bookingService.createBooking(
+            request.getClassSessionId(), userId, request.getNotes());
+
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 
     /**
      * Cancel a booking
      */
     @PostMapping("/{bookingId}/cancel")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_TRAINER','ROLE_OWNER')")
     public ResponseEntity<BookingActionResponseDTO> cancelBooking(
             @PathVariable Long bookingId,
             @Valid @RequestBody CancelBookingRequestDTO request,
@@ -59,7 +80,7 @@ public class BookingActionsController {
      * Reschedule a booking
      */
     @PostMapping("/{bookingId}/reschedule")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_TRAINER','ROLE_OWNER')")
     public ResponseEntity<BookingActionResponseDTO> rescheduleBooking(
             @PathVariable Long bookingId,
             @Valid @RequestBody RescheduleBookingRequestDTO request,
@@ -91,7 +112,7 @@ public class BookingActionsController {
      * Get user's booking history
      */
     @GetMapping("/my-bookings")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_TRAINER','ROLE_OWNER')")
     public ResponseEntity<List<BookingDTO>> getMyBookings(Authentication authentication) {
         
         Long userId = getCurrentUserId(authentication);
@@ -105,7 +126,7 @@ public class BookingActionsController {
      * Get specific booking details
      */
     @GetMapping("/{bookingId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('ROLE_MEMBER','ROLE_TRAINER','ROLE_OWNER')")
     public ResponseEntity<BookingDTO> getBooking(
             @PathVariable Long bookingId,
             Authentication authentication) {

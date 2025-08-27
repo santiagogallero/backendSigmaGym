@@ -52,7 +52,7 @@ public class DataInitializationService implements CommandLineRunner {
     private void initializeSeedUsers() {
         log.info("Initializing seed users...");
         
-        // Create Owner user if not exists
+    // Create Owner user if not exists
         String ownerEmail = "owner@sigmamgym.com";
         if (!userRepository.existsByEmail(ownerEmail)) {
             RoleEntity ownerRole = roleRepository.findByName(RoleEntity.RoleName.OWNER)
@@ -71,6 +71,19 @@ public class DataInitializationService implements CommandLineRunner {
             userRepository.save(owner);
             log.info("Created owner user with email: {}", ownerEmail);
         }
+
+        // Ensure ADMIN and STAFF roles exist (no users by default)
+        roleRepository.findByName(RoleEntity.RoleName.ADMIN)
+            .orElseGet(() -> roleRepository.save(RoleEntity.builder()
+                .name(RoleEntity.RoleName.ADMIN)
+                .priority(RoleEntity.RoleName.ADMIN.getDefaultPriority())
+                .build()));
+
+        roleRepository.findByName(RoleEntity.RoleName.STAFF)
+            .orElseGet(() -> roleRepository.save(RoleEntity.builder()
+                .name(RoleEntity.RoleName.STAFF)
+                .priority(RoleEntity.RoleName.STAFF.getDefaultPriority())
+                .build()));
 
         // Create sample Trainer user if not exists
         String trainerEmail = "trainer@sigmamgym.com";

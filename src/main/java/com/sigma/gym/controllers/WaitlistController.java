@@ -8,6 +8,7 @@ import com.sigma.gym.services.WaitlistService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/waitlist")
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "sigmagym.features.waitlist", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class WaitlistController {
 
     private final WaitlistService waitlistService;

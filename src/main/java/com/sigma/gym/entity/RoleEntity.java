@@ -22,11 +22,13 @@ public class RoleEntity {
     private RoleName name;
 
     @Column(nullable = false)
-    private Integer priority; // 1 = más poder (OWNER), 2 = TRAINER, 3 = MEMBER
+    private Integer priority; // 1 = más poder (OWNER/ADMIN), 2 = TRAINER/STAFF, 3 = MEMBER
 
     public enum RoleName {
         OWNER(1),
-        TRAINER(2), 
+        ADMIN(1),
+        TRAINER(2),
+        STAFF(2), 
         MEMBER(3);
 
         private final int defaultPriority;

@@ -31,7 +31,7 @@ public class RegisterRequest {
     private String lastName;
 
     @NotNull(message = "La edad es obligatoria")
-    @Min(value = 13, message = "La edad mínima es 13 años")
+    @Min(value = 7, message = "La edad mínima es 7 años")
     @Max(value = 100, message = "La edad máxima es 100 años")
     private Integer age;
 
